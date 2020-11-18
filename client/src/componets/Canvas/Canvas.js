@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import Game from '../../utils/Game';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import './Canvas.css';
-// import socketApi from '../../utils/socketApi';
 
-export default class Canvas extends Component {
+class Canvas extends Component {
   state = {
     size: this.props.size,
   };
@@ -18,7 +18,14 @@ export default class Canvas extends Component {
   }
 
   renderHorizontalLine(i, j) {
-    return <div className="Horizontal" i={i} j={j} key={i+j}></div>;
+    return (
+      <div 
+        className="Horizontal" 
+        i={i} j={j} 
+        key={i+j} 
+        onClick={() => this.props.makeMove({i, j})}
+      ></div>
+    );
   }
 
   renderVerticalLine(i, j) {
@@ -60,3 +67,18 @@ export default class Canvas extends Component {
 Canvas.propTypes = {
   size: PropTypes.number.isRequired,
 };
+
+const mapStateToProps = state => {
+  return {
+    availableMoves: state.game.availableMoves,
+  };
+};
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    makeMove: (coords) => dispatch(actions.makeMove(coords)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

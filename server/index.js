@@ -34,6 +34,9 @@ io.on('connection', (socket) => {
     createGame(size);
     socket.emit('get-available-moves', game.getAvailableMoves());
   });
+  socket.on('make-move', (coords) => {
+    console.log(coords);
+  });
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

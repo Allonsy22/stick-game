@@ -42,3 +42,10 @@ export const getAvailableMoves = (data) => {
         availableMoves: data,
     };
 };
+
+export const makeMove = (coords) => {
+    socket.emit('make-move', coords);
+    return {
+        type: actionTypes.MAKE_MOVE,
+    };
+};
