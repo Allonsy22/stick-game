@@ -4,7 +4,6 @@ const cors = require('cors');
 
 const Game = require('./game/Game');
 const game = new Game();
-game.newGame({ size: 3 });
 
 const app = express();
 app.use(bodyParser.json());
@@ -31,10 +30,15 @@ const io = require('socket.io')(server, { origins: 'http://localhost:3000/' });
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('test', (data) => {
-    console.log(data);
+  socket.on('create-game', (size) => {
+    createGame(size);
+    socket.emit('get-available-moves', game.getAvailableMoves());
   });
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
 });
+
+function createGame(size) {
+  game.newGame({size});
+}
