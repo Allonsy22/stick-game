@@ -13,8 +13,10 @@ export default class Canvas extends Component {
     game = new Game({
       canvas: canvas,
       size: 3,
+      player: 'Red',
+      opponent: 'Blue',
     });
-    game.prepareToGame();
+    game.newGame();
     this.setState({ game });
   };
 

@@ -38,3 +38,11 @@
 .Vertical:hover {
   background-color: #686868;
 }
+
+.Red {
+  background-color: rgb(255, 0, 0);
+}
+
+.Blue {
+  background-color: rgb(0, 0, 255);
+}
