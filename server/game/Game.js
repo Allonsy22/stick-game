@@ -31,33 +31,29 @@ class Game {
 
   makeMove(coords) {
     const { i, j } = coords;
-    const filledSquareCoords = [];
+    const ownedSquareCoords = [];
     if (this.isAvalaibleMove(i, j)) {
       this.availableMoves = this.availableMoves.filter(coords => {
         return coords.i !== i || coords.j !== j;
       });
       this.squares.forEach(square => {
         if (square.isSquareFilled(i, j)) {
-          filledSquareCoords.push(square.getSquareCoords());
+          ownedSquareCoords.push(square.getSquareCoords());
         }
       });
 
-      if (filledSquareCoords.length > 0) {
+      if (ownedSquareCoords.length > 0) {
         return {
-          nextTurn: true,
-          filledSquareCoords,
+          isNextTurn: true,
+          ownedSquareCoords,
           availableMoves: this.getAvailableMoves(),
         };
       } else {
         return {
-          nextTurn: false,
+          isNextTurn: false,
           availableMoves: this.getAvailableMoves(),
         };
       }
-    }
-    return {
-      nextTurn: true, 
-      availableMoves: this.getAvailableMoves(),
     }
   }
 
@@ -110,7 +106,7 @@ class Square {
     if (!this.owned
       && this.top === 'filled'
       && this.right === 'filled'
-      && this.bottom === 'fillde'
+      && this.bottom === 'filled'
       && this.left === 'filled') {
       this.owned = true;
       return true;

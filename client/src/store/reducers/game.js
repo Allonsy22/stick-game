@@ -6,16 +6,21 @@ const players = ['Red', 'Blue'];
 const initialState = {
   player: null,
   opponent: null,
+  isNextTurn: true,
+  opponentTurn: false,
   size: 3,
   availableMoves: [],
   playerMadeMoves: [],
   opponentMadeMoves: [],
+  playerOwnedSquares: [],
+  opponentOwnedSquares: [],
 };
 
 const setFirstPlayer = (state, action) => {
   return updateObject(state, {
     player: players[0],
     opponent: players[1],
+    isNextTurn: true,
   });
 };
 
@@ -23,6 +28,7 @@ const setSecondPlayer = (state, action) => {
   return updateObject(state, {
     player: players[1],
     opponent: players[0],
+    isNextTurn: false,
   });
 };
 
@@ -44,6 +50,24 @@ const getOpponentMove = (state, action) => {
   });
 };
 
+const setNextTurn = (state, action) => {
+  return updateObject(state, {
+    isNextTurn: !state.isNextTurn
+  });
+};
+
+const setPlayerOwnedSquare = (state, action) => {
+  return updateObject(state, {
+    playerOwnedSquares: [...state.playerOwnedSquares, ...action.playerOwnedSquares],
+  });
+};
+
+const setOpponentOwnedSquare = (state, action) => {
+  return updateObject(state, {
+    opponentOwnedSquares: [...state.opponentOwnedSquares, ...action.opponentOwnedSquares],
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_FIRST_PLAYER: return setFirstPlayer(state, action);
@@ -51,6 +75,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_AVAILABLE_MOVES: return getAvailableMoves(state, action);
     case actionTypes.MAKE_MOVE: return makeMove(state, action);
     case actionTypes.GET_OPPONENT_MOVE: return getOpponentMove(state, action);
+    case actionTypes.SET_NEXT_TURN: return setNextTurn(state, action);
+    case actionTypes.SET_PLAYER_OWNED_SQUARE: return setPlayerOwnedSquare(state, action);
+    case actionTypes.SET_OPPONENT_OWNED_SQUARE: return setOpponentOwnedSquare(state, action);
     default: return state;
   }
 };

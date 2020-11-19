@@ -12,8 +12,19 @@ export const createGame = (size) => {
         });
 
         socket.on('opponent-move', (coords) => {
-            console.log(coords);
             dispatch(getOpponentMove(coords));
+        });
+        
+        socket.on('nextTurn', () => {
+            dispatch(setNextTurn());
+        });
+
+        socket.on('get-player-owned-square', (squareCoords) => {
+            dispatch(setPlayerOwnedSquare(squareCoords));
+        });
+
+        socket.on('get-opponent-owned-square', (squareCoords) => {
+            dispatch(setOpponentOwnedSquare(squareCoords));
         });
 
         dispatch(setFirstPlayer());
@@ -28,10 +39,21 @@ export const joinGame = () => {
         });
 
         socket.on('opponent-move', (coords) => {
-            console.log(coords);
             dispatch(getOpponentMove(coords));
         });
-        
+
+        socket.on('nextTurn', () => {
+            dispatch(setNextTurn());
+        });
+
+        socket.on('get-player-owned-square', (squareCoords) => {
+            dispatch(setPlayerOwnedSquare(squareCoords));
+        });
+
+        socket.on('get-opponent-owned-square', (squareCoords) => {
+            dispatch(setOpponentOwnedSquare(squareCoords));
+        });
+
         dispatch(setSecondPlayer());
     };
 };
@@ -63,15 +85,29 @@ export const makeMove = (coords) => {
     };
 };
 
-export const getMoves = (coords) => {
-    return {
-        type: actionTypes.MAKE_MOVE,
-    };
-};
-
 export const getOpponentMove = (coords) => {
     return {
         type: actionTypes.GET_OPPONENT_MOVE,
         coords,
     };
-}
+};
+
+export const setNextTurn = () => {
+    return {
+        type: actionTypes.SET_NEXT_TURN,
+    };
+};
+
+export const setPlayerOwnedSquare = (squareCoords) => {
+    return {
+        type: actionTypes.SET_PLAYER_OWNED_SQUARE,
+        playerOwnedSquares: squareCoords,
+    };
+};
+
+export const setOpponentOwnedSquare = (squareCoords) => {
+    return {
+        type: actionTypes.SET_OPPONENT_OWNED_SQUARE,
+        opponentOwnedSquares: squareCoords,
+    };
+};

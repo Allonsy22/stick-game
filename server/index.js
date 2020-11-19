@@ -38,6 +38,13 @@ io.on('connection', (socket) => {
   });
   socket.on('make-move', (coords) => {
     const response = game.makeMove(coords);
+    if (response.isNextTurn === true) {
+      socket.emit('get-player-owned-square', response.ownedSquareCoords);
+      socket.broadcast.to('game').emit('get-opponent-owned-square', response.ownedSquareCoords);
+    } else if(response.isNextTurn === false) {
+      io.to('game').emit('nextTurn');
+    }
+    io.to('game').emit('get-available-moves', response.availableMoves);
     socket.broadcast.to('game').emit('opponent-move', coords); 
   });
   socket.on('disconnect', () => {

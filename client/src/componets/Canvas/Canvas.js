@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import { isCoordsInArray } from '../../utils/isCoordsInArray';
+import Line from './Line/Line';
 import './Canvas.css';
 
 class Canvas extends Component {
@@ -15,16 +16,20 @@ class Canvas extends Component {
   };
 
   makeMove(props) {
-    const { i, j, isCoords } = props;
-    if (!isCoords) this.props.makeMove({i, j});
+    const { i, j } = props;
+    const isCoords = isCoordsInArray({
+      coords: {i, j},
+      array: this.props.availableMoves
+    });
+    if (isCoords && this.props.isNextTurn) this.props.makeMove({i, j});
   }
 
   renderPoint(i, j) {
     return <div className="Point" i={i} j={j} key={i+j}></div>;
   }
 
-  renderHorizontalLine(i, j) {
-    let className = 'Horizontal';
+  getLineOwner(i, j) {
+    let owner;
     const isPlayerCoords = isCoordsInArray({
       coords: {i, j}, 
       array: this.props.playerMadeMoves,
@@ -33,24 +38,39 @@ class Canvas extends Component {
       coords: {i, j}, 
       array: this.props.opponentMadeMoves,
     });
-    if (isPlayerCoords) className = `Horizontal ${this.props.player}`;
-    if (isOpponentCoords) className = `Horizontal ${this.props.opponent}`;
-    return (
-      <div 
-        className={className} 
-        i={i} j={j} 
-        key={i+j} 
-        onClick={() => this.makeMove({i, j, isCoords: isPlayerCoords && isOpponentCoords})}
-      ></div>
-    );
+    if (isPlayerCoords) owner = this.props.player;
+    if (isOpponentCoords) owner = this.props.opponent;
+    return owner;
+  }
+
+  renderHorizontalLine(i, j) {
+    const owner = this.getLineOwner(i, j);
+    const props = {i, j, owner, type: 'Horizontal'};
+    return <Line {...props} key={i + j}/>
   }
 
   renderVerticalLine(i, j) {
-    return <div className="Vertical" i={i} j={j} key={i+j}></div>;
+    const owner = this.getLineOwner(i, j);
+    const props = {i, j, owner, type: 'Vertical'};
+    return <Line {...props} key={i + j} />
   }
 
   renderSquare(i, j) {
-    return <div className="Square" i={i} j={j} key={i+j}></div>;
+    let owner;
+    const isPlayerOwner = isCoordsInArray({
+      coords: {i, j}, 
+      array: this.props.playerOwnedSquares,
+    });
+    const isOpponentOwner = isCoordsInArray({
+      coords: {i, j}, 
+      array: this.props.opponentOwnedSquares,
+    });
+
+    if (isPlayerOwner) owner = this.props.player;
+    if (isOpponentOwner) owner = this.props.opponent;
+
+    const className = `Square ${owner}`;
+    return <div className={className} i={i} j={j} key={i+j}></div>;
   }
 
   renderColumn(i, j) {
@@ -89,9 +109,12 @@ const mapStateToProps = state => {
   return {
     player: state.game.player,
     opponent: state.game.opponent,
+    isNextTurn: state.game.isNextTurn,
     availableMoves: state.game.availableMoves,
     playerMadeMoves: state.game.playerMadeMoves,
     opponentMadeMoves: state.game.opponentMadeMoves,
+    playerOwnedSquares: state.game.playerOwnedSquares,
+    opponentOwnedSquares: state.game.opponentOwnedSquares,
   };
 };
 
