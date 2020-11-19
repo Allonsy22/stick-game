@@ -68,8 +68,8 @@ class Game {
     return isAvailable;
   }
 
-  isNextTurn() {
-
+  isGameOver() {
+    return this.availableMoves.length === 0;
   }
 
   getSquare(i, j) {

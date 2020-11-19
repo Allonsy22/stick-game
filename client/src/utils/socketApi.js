@@ -4,8 +4,8 @@ const URI = "http://localhost:3333";
 export default class socketAPI {
   socket;
 
-  connect() {
-    this.socket = socketIOClient(URI, {transports: ['websocket', 'polling']});
+  connect(room, type) {
+    this.socket = socketIOClient(URI, {transports: ['websocket', 'polling'], query : {'room': room, 'type': type}});
     return new Promise((resolve, reject) => {
       this.socket.on('connection', () => resolve());
       this.socket.on('connect_error', (error) => reject(error));

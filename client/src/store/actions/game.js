@@ -4,7 +4,7 @@ import socketApi from '../../utils/socketApi';
 const socket = new socketApi();
 
 export const createGame = (size) => {
-    socket.connect();
+    socket.connect(22, 'Create');
     socket.emit('create-game', size);
     return dispatch => {
         socket.on('get-available-moves', (data) => {
@@ -27,12 +27,16 @@ export const createGame = (size) => {
             dispatch(setOpponentOwnedSquare(squareCoords));
         });
 
+        socket.on('game-over', () => {
+            dispatch(gameOver());
+        });
+
         dispatch(setFirstPlayer());
     };
 };
 
 export const joinGame = () => {
-    socket.connect();
+    socket.connect(22, 'Join');
     return dispatch => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
@@ -52,6 +56,10 @@ export const joinGame = () => {
 
         socket.on('get-opponent-owned-square', (squareCoords) => {
             dispatch(setOpponentOwnedSquare(squareCoords));
+        });
+
+        socket.on('game-over', () => {
+            dispatch(gameOver());
         });
 
         dispatch(setSecondPlayer());
@@ -111,3 +119,9 @@ export const setOpponentOwnedSquare = (squareCoords) => {
         opponentOwnedSquares: squareCoords,
     };
 };
+
+export const gameOver = () => {
+    return {
+        type: actionTypes.GAME_OVER,
+    }
+}

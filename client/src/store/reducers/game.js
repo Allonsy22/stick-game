@@ -9,6 +9,8 @@ const initialState = {
   isNextTurn: true,
   opponentTurn: false,
   size: 3,
+  gameOver: false,
+  winner: null,
   availableMoves: [],
   playerMadeMoves: [],
   opponentMadeMoves: [],
@@ -35,6 +37,17 @@ const setSecondPlayer = (state, action) => {
 const getAvailableMoves = (state, action) => {
   return updateObject(state, {
     availableMoves: action.availableMoves,
+  });
+};
+
+const gameOver = (state) => {
+  const diff = state.playerOwnedSquares.length - state.opponentOwnedSquares.length;
+  let winner = 'Draw';
+  if (diff > 0) winner = state.player;
+  if (diff < 0) winner = state.opponent;
+  return updateObject(state, {
+    gameOver: true,
+    winner, 
   });
 };
 
@@ -73,6 +86,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_FIRST_PLAYER: return setFirstPlayer(state, action);
     case actionTypes.SET_SECOND_PLAYER: return setSecondPlayer(state, action);
     case actionTypes.GET_AVAILABLE_MOVES: return getAvailableMoves(state, action);
+    case actionTypes.GAME_OVER: return gameOver(state);
     case actionTypes.MAKE_MOVE: return makeMove(state, action);
     case actionTypes.GET_OPPONENT_MOVE: return getOpponentMove(state, action);
     case actionTypes.SET_NEXT_TURN: return setNextTurn(state, action);

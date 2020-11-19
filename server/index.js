@@ -26,10 +26,18 @@ const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+const rooms = [];
+
 const io = require('socket.io')(server, { origins: '*' });
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  const type = socket.request._query['type'];
+  const room = socket.request._query['room'];
+
+  if (rooms.includes(room) && type === 'Create') {
+
+  }
   socket.join('game');
   
   socket.on('create-game', (size) => {
@@ -45,7 +53,10 @@ io.on('connection', (socket) => {
       io.to('game').emit('nextTurn');
     }
     io.to('game').emit('get-available-moves', response.availableMoves);
-    socket.broadcast.to('game').emit('opponent-move', coords); 
+    socket.broadcast.to('game').emit('opponent-move', coords);
+    if (game.isGameOver()) {
+      io.to('game').emit('game-over');
+    }
   });
   socket.on('disconnect', () => {
     console.log('user disconnected');
