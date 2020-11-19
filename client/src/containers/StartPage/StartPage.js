@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
-import { Canvas, Button } from '../../componets';
+import { Canvas } from '../../componets';
 import './StartPage.css';
 
 class StartPage extends Component {
@@ -10,8 +10,6 @@ class StartPage extends Component {
       <div className="StartPage-container">
         <Canvas size={2}/>
         <div display="flex">
-          <Button text="Create Game" type="Create"/>
-          <Button text="Join Game" type="Join"/>
         </div>
         <button onClick={() => this.props.createGame(2)}>New Game</button>
         <button onClick={this.props.joinGame}>Join Game</button>
