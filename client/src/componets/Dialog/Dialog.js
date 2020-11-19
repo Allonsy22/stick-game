@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { connect} from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Select } from '../index';
+import * as actions from '../../store/actions/index';
 
 class Dialog extends Component {
   renderCreateDialog() {
-    const { show, onClose } = this.props;
+    const { isCreateGameDialog, closeCreateGameDialog } = this.props;
     return (
-      <Modal show={show} onHide={() => {}}>
+      <Modal show={isCreateGameDialog} onHide={() => {}}>
         <Modal.Header>
           <Modal.Title>Create Game</Modal.Title>
         </Modal.Header>
@@ -18,7 +20,7 @@ class Dialog extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => onClose()}>Close</Button>
+          <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
           <Button variant="primary">Submit</Button>
         </Modal.Footer>
       </Modal>
@@ -26,9 +28,9 @@ class Dialog extends Component {
   };
 
   renderJoinDialog() {
-    const { show } = this.props;
+    const { isJoinGameDialog, closeJoinGameDialog } = this.props;
     return (
-      <Modal show={show} onHide={() => {}}>
+      <Modal show={isJoinGameDialog} onHide={() => {}}>
         <Modal.Header>
           <Modal.Title>Join Game</Modal.Title>
         </Modal.Header>
@@ -39,7 +41,7 @@ class Dialog extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary">Close</Button>
+          <Button variant="secondary" onClick={() => closeJoinGameDialog()}>Close</Button>
           <Button variant="primary">Submit</Button>
         </Modal.Footer>
       </Modal>
@@ -47,15 +49,28 @@ class Dialog extends Component {
   }
 
   render() {
-    const { type } = this.props;
     return (
       <>
-        { type === 'Create'
-          ? this.renderCreateDialog()
-          : this.renderJoinDialog()}
+        {this.renderCreateDialog()}
+        {this.renderJoinDialog()}
       </>
     )
   }
 };
 
-export default Dialog;
+const mapStateToProps = state => {
+  return {
+    isCreateGameDialog: state.dialog.isCreateGameDialog,
+    isJoinGameDialog: state.dialog.isJoinGameDialog,
+  };
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeCreateGameDialog: () => dispatch(actions.closeCreateGameDialog()),
+    closeJoinGameDialog: () => dispatch(actions.closeJoinGameDialog()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dialog);

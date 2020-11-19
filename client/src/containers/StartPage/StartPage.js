@@ -8,21 +8,22 @@ import './StartPage.css';
 class StartPage extends Component {
 
   render() {
+    const { showCreateGameDialog, showJoinGameDialog } = this.props;
     return (
       <div className="StartPage-container">
         <h2>Dots and Boxes</h2>
-        <Dialog/>
+        <Dialog />
         <Canvas size={2} />
         <div display="flex">
           <Button 
             variant="primary" 
             className="StartPage-button" 
-            onClick={() => this.showCreateDialog()}
+            onClick={() => showCreateGameDialog()}
           >Create Game</Button>
           <Button 
             variant="primary" 
             className="StartPage-button" 
-            onClick={() => this.showJoinDialog()}
+            onClick={() => showJoinGameDialog()}
           >Join Game</Button>
         </div>
         <p>Player: {this.props.player}</p>
@@ -45,6 +46,8 @@ const mapDispatchToProps = dispatch => {
   return {
     createGame: (size) => dispatch(actions.createGame(size)),
     joinGame: () => dispatch(actions.joinGame()),
+    showCreateGameDialog: () => dispatch(actions.showCreateGameDialog()),
+    showJoinGameDialog: () => dispatch(actions.showJoinGameDialog()),
   }
 }
 
