@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
-import { isCoordsInArray } from '../../utils/isCoordsInArray';
+import { isCoordsInArray } from '../../utils/utils';
 import Line from './Line/Line';
 import './Canvas.css';
 

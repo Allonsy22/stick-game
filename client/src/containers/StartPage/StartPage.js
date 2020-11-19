@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
-import { Canvas } from '../../componets';
+import { Canvas, Dialog } from '../../componets';
+import Button from 'react-bootstrap/Button';
 import './StartPage.css';
 
 class StartPage extends Component {
+
   render() {
     return (
       <div className="StartPage-container">
-        <Canvas size={2}/>
+        <h2>Dots and Boxes</h2>
+        <Dialog/>
+        <Canvas size={2} />
         <div display="flex">
+          <Button 
+            variant="primary" 
+            className="StartPage-button" 
+            onClick={() => this.showCreateDialog()}
+          >Create Game</Button>
+          <Button 
+            variant="primary" 
+            className="StartPage-button" 
+            onClick={() => this.showJoinDialog()}
+          >Join Game</Button>
         </div>
-        <button onClick={() => this.props.createGame(2)}>New Game</button>
-        <button onClick={this.props.joinGame}>Join Game</button>
         <p>Player: {this.props.player}</p>
         <p>Winner: {this.props.winner}</p>
       </div>

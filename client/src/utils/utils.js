@@ -1,3 +1,10 @@
+export const updateObject = (oldObject, updatedProperties) => {
+  return {
+      ...oldObject,
+      ...updatedProperties
+  };
+}; 
+
 export const isCoordsInArray = (props) => {
   // array like [{i, j}, {i, j}...]
   const { coords, array } = props;
@@ -9,3 +16,7 @@ export const isCoordsInArray = (props) => {
   });
   return isCoords;
 };
+
+export const getRoomCode = () => {
+  return Math.random() * (9999 - 1000) + 1000;
+}

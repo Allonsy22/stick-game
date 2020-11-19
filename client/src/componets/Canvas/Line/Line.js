@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import { connect} from 'react-redux';
-import { isCoordsInArray } from '../../../utils/isCoordsInArray';
+import { isCoordsInArray } from '../../../utils/utils';
 import * as actions from '../../../store/actions/index';
 
 class Line extends Component {
