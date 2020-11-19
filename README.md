@@ -6,17 +6,21 @@ Dots and boxes is a game created using React and Redux as client side and Node.j
 
 Clone repo https://gitlab.com/wemyit.trainee/oleksandr-hritsaienko.git;
 
-```client
+_client_
+```
 cd client && npm install
 ```
-```server
+_server_
+```
 cd server && npm install
+```
 ## Usage
-
-```client folder
+_client folder_
+```
 npm start
 ```
-```server folder
+_server folder_
+```
 npm run dev
 ```
 
