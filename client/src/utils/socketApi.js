@@ -5,7 +5,7 @@ export default class socketAPI {
   socket;
 
   connect() {
-    this.socket = socketIOClient(URI, {transports: ['websocket', 'polling', 'flashsocket']});
+    this.socket = socketIOClient(URI, {transports: ['websocket', 'polling']});
     return new Promise((resolve, reject) => {
       this.socket.on('connection', () => resolve());
       this.socket.on('connect_error', (error) => reject(error));

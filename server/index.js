@@ -26,16 +26,19 @@ const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-const io = require('socket.io')(server, { origins: 'http://localhost:3000/' });
+const io = require('socket.io')(server, { origins: '*' });
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.join('game');
+  
   socket.on('create-game', (size) => {
     createGame(size);
     socket.emit('get-available-moves', game.getAvailableMoves());
   });
   socket.on('make-move', (coords) => {
-    console.log(coords);
+    const response = game.makeMove(coords);
+    socket.broadcast.to('game').emit('opponent-move', coords); 
   });
   socket.on('disconnect', () => {
     console.log('user disconnected');

@@ -11,7 +11,10 @@ class StartPage extends Component {
         <Canvas size={3}/>
         <button onClick={() => this.props.createGame(this.props.size)}>New Game</button>
         <button onClick={this.props.joinGame}>Join Game</button>
-        <p>Player: {this.props.player}</p>
+        <p onClick={() => {
+          console.log(this.props.playerMadeMoves);
+          console.log(this.props.opponentMadeMoves);
+        }}>Player: {this.props.player}</p>
       </div>
     )
   }
@@ -22,6 +25,8 @@ const mapStateToProps = state => {
     player: state.game.player,
     size: state.game.size,
     availableMoves: state.game.availableMoves,
+    playerMadeMoves: state.game.playerMadeMoves,
+    opponentMadeMoves: state.game.opponentMadeMoves,
   };
 }
 

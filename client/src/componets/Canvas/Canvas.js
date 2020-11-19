@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import { isCoordsInArray } from '../../utils/isCoordsInArray';
 import './Canvas.css';
 
 class Canvas extends Component {
@@ -13,17 +14,33 @@ class Canvas extends Component {
 
   };
 
+  makeMove(props) {
+    const { i, j, isCoords } = props;
+    if (!isCoords) this.props.makeMove({i, j});
+  }
+
   renderPoint(i, j) {
     return <div className="Point" i={i} j={j} key={i+j}></div>;
   }
 
   renderHorizontalLine(i, j) {
+    let className = 'Horizontal';
+    const isPlayerCoords = isCoordsInArray({
+      coords: {i, j}, 
+      array: this.props.playerMadeMoves,
+    });
+    const isOpponentCoords = isCoordsInArray({
+      coords: {i, j}, 
+      array: this.props.opponentMadeMoves,
+    });
+    if (isPlayerCoords) className = `Horizontal ${this.props.player}`;
+    if (isOpponentCoords) className = `Horizontal ${this.props.opponent}`;
     return (
       <div 
-        className="Horizontal" 
+        className={className} 
         i={i} j={j} 
         key={i+j} 
-        onClick={() => this.props.makeMove({i, j})}
+        onClick={() => this.makeMove({i, j, isCoords: isPlayerCoords && isOpponentCoords})}
       ></div>
     );
   }
@@ -70,7 +87,11 @@ Canvas.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    player: state.game.player,
+    opponent: state.game.opponent,
     availableMoves: state.game.availableMoves,
+    playerMadeMoves: state.game.playerMadeMoves,
+    opponentMadeMoves: state.game.opponentMadeMoves,
   };
 };
 

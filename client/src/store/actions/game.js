@@ -10,6 +10,12 @@ export const createGame = (size) => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
         });
+
+        socket.on('opponent-move', (coords) => {
+            console.log(coords);
+            dispatch(getOpponentMove(coords));
+        });
+
         dispatch(setFirstPlayer());
     };
 };
@@ -20,6 +26,12 @@ export const joinGame = () => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
         });
+
+        socket.on('opponent-move', (coords) => {
+            console.log(coords);
+            dispatch(getOpponentMove(coords));
+        });
+        
         dispatch(setSecondPlayer());
     };
 };
@@ -47,5 +59,19 @@ export const makeMove = (coords) => {
     socket.emit('make-move', coords);
     return {
         type: actionTypes.MAKE_MOVE,
+        coords,
     };
 };
+
+export const getMoves = (coords) => {
+    return {
+        type: actionTypes.MAKE_MOVE,
+    };
+};
+
+export const getOpponentMove = (coords) => {
+    return {
+        type: actionTypes.GET_OPPONENT_MOVE,
+        coords,
+    };
+}

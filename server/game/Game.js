@@ -3,6 +3,8 @@ class Game {
     this.size = null;
     this.availableMoves = [];
     this.squares = [];
+    this.firstPlayer = 'Red';
+    this.secondPlayer = 'Blue';
   };
 
   newGame(props) {
@@ -27,20 +29,36 @@ class Game {
     }
   }
 
-  makeMove(i, j) {
+  makeMove(coords) {
+    const { i, j } = coords;
     const filledSquareCoords = [];
     if (this.isAvalaibleMove(i, j)) {
       this.availableMoves = this.availableMoves.filter(coords => {
         return coords.i !== i || coords.j !== j;
       });
-      this.squares.forEach( square => {
+      this.squares.forEach(square => {
         if (square.isSquareFilled(i, j)) {
           filledSquareCoords.push(square.getSquareCoords());
         }
       });
 
+      if (filledSquareCoords.length > 0) {
+        return {
+          nextTurn: true,
+          filledSquareCoords,
+          availableMoves: this.getAvailableMoves(),
+        };
+      } else {
+        return {
+          nextTurn: false,
+          availableMoves: this.getAvailableMoves(),
+        };
+      }
     }
-    return false;
+    return {
+      nextTurn: true, 
+      availableMoves: this.getAvailableMoves(),
+    }
   }
 
   isAvalaibleMove(i, j) {
@@ -55,17 +73,17 @@ class Game {
   }
 
   isNextTurn() {
-    
+
   }
 
   getSquare(i, j) {
-    const top = {i: i - 1, j};
-    const right = {i, j: j + 1};
-    const bottom = {i: i + 1, j};
-    const left = {i, j: j - 1};
-    return new Square({squareCoords: {i, j}, top, right, bottom, left});
+    const top = { i: i - 1, j };
+    const right = { i, j: j + 1 };
+    const bottom = { i: i + 1, j };
+    const left = { i, j: j - 1 };
+    return new Square({ squareCoords: { i, j }, top, right, bottom, left });
   }
-  
+
   getAvailableMoves() {
     return this.availableMoves;
   }
@@ -89,14 +107,14 @@ class Square {
 
   isSquareFilled(i, j) {
     this.fillLine(i, j);
-    if (!this.owned 
+    if (!this.owned
       && this.top === 'filled'
       && this.right === 'filled'
       && this.bottom === 'fillde'
       && this.left === 'filled') {
-        this.owned = true;
-        return true;
-      };
+      this.owned = true;
+      return true;
+    };
     return false;
   }
 
