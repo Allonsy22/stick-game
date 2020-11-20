@@ -18,12 +18,12 @@ class StartPage extends Component {
           <Button 
             variant="primary" 
             className="StartPage-button" 
-            onClick={() => showCreateGameDialog()}
+            onClick={() => this.props.createGame(2)}
           >Create Game</Button>
           <Button 
             variant="primary" 
             className="StartPage-button" 
-            onClick={() => showJoinGameDialog()}
+            onClick={() => this.props.joinGame()}
           >Join Game</Button>
         </div>
         <p>Player: {this.props.player}</p>

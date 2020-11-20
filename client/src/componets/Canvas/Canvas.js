@@ -11,10 +11,6 @@ class Canvas extends Component {
     size: this.props.size,
   };
 
-  componentDidMount() {
-
-  };
-
   makeMove(props) {
     const { i, j } = props;
     const isCoords = isCoordsInArray({
