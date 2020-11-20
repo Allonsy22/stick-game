@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
 import Auth from "../../utils/Auth/auth";
 
-export const register = (username, email, password) => (dispatch) => {
-  return Auth.register(username, email, password).then(
+export const register = (email, password) => (dispatch) => {
+  return Auth.register(email, password).then(
     (response) => {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
@@ -19,8 +19,8 @@ export const register = (username, email, password) => (dispatch) => {
   );
 };
 
-export const login = (username, password) => (dispatch) => {
-  return Auth.login(username, password).then(
+export const login = (email, password) => (dispatch) => {
+  return Auth.login(email, password).then(
     (data) => {
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,

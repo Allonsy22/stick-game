@@ -3,3 +3,7 @@
   height: auto;
   margin: 30px auto 30px auto;
 }
+
+.AuthPage-error {
+  color: #FF0000;
+}

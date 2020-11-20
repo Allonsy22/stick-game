@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './AuthPage.css';
@@ -43,8 +45,16 @@ class AuthPage extends Component {
     });
   };
 
-  onSubmitHandler() {
+  onSubmitLoginHandler() {
     this.simpleValid();
+    if (this.state.errorMsgs.length > 0) return;
+    this.props.login();
+  };
+
+  onSubmitRegisterHandler() {
+    this.simpleValid();
+    if (this.state.errorMsgs.length > 0) return;
+    this.props.register();
   };
 
   renderLoginForm() {
@@ -77,7 +87,7 @@ class AuthPage extends Component {
     const { email, password } = this.state;
     return (
       <Form>
-        <h5>Register</h5>
+        <h5>Registration</h5>
         <Form.Group>
           <Form.Label>Email address</Form.Label>
           <Form.Control name="email" type="email" value={email} onChange={this.onInputchange}/>
@@ -105,6 +115,7 @@ class AuthPage extends Component {
     return (
       <div className="AuthPage-container">
         <h3>Auth to play the game</h3>
+        <p className="AuthPage-error">{this.props.message}</p>
         {loginForm ? this.renderLoginForm() : this.renderRegForm()}
         {errorMsgs.map( (msg, index) => (<p key={index}>{msg}</p>))}
       </div>
@@ -112,5 +123,19 @@ class AuthPage extends Component {
   }
 };
 
-export default AuthPage;
+const mapStateToProps = state => {
+  return {
+    isLoggedIn: state.auth.isLoggedIn,
+    message: state.auth.message,
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email, password) => dispatch(actions.login(email, password)),
+    register: (email, password) => dispatch(actions.register(email, password)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);
 

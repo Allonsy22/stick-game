@@ -40,7 +40,6 @@ const mapStateToProps = state => {
   };
 }
 
-
 const mapDispatchToProps = dispatch => {
   return {
     createGame: (size) => dispatch(actions.createGame(size)),

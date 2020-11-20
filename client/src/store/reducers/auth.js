@@ -16,7 +16,7 @@ const registerSuccess = (state) => {
 const registerFail = (state, action) => {
   return updateObject(state, {
     isLoggedIn: false,
-    message: action.message
+    message: action.message.toString()
   });
 };
 
@@ -31,7 +31,7 @@ const loginFail = (state, action) => {
   return updateObject(state, {
     isLoggedIn: false,
     user: null,
-    message: action.message
+    message: action.message.toString()
   });
 };
 

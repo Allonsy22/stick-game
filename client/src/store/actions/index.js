@@ -10,3 +10,9 @@ export {
   closeCreateGameDialog,
   closeJoinGameDialog,
 } from './dialog';
+
+export {
+  login,
+  logout,
+  register,
+} from './auth';
