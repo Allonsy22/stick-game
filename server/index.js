@@ -11,6 +11,7 @@ const loginRoutes = require('./api/routes/login');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: true }));
 
 app.use('/gameRoom', gameRoutes);
