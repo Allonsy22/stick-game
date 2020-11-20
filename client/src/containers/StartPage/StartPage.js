@@ -11,7 +11,6 @@ class StartPage extends Component {
     const { showCreateGameDialog, showJoinGameDialog } = this.props;
     return (
       <div className="StartPage-container">
-        <h2>Dots and Boxes</h2>
         <Dialog />
         <Canvas size={2} />
         <div display="flex">
