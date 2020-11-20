@@ -7,7 +7,7 @@ const Game = require('./game/Game');
 const game = new Game();
 
 const gameRoutes = require('./api/routes/gameRoom');
-const loginRoutes = require('./api/routes/login');
+const authRoutes = require('./api/routes/auth');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({ origin: true }));
 
 app.use('/gameRoom', gameRoutes);
-app.use('/login', loginRoutes);
+app.use('/auth', authRoutes);
 
 const port = process.env.PORT || 3333;
 
