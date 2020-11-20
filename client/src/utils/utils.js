@@ -16,7 +16,3 @@ export const isCoordsInArray = (props) => {
   });
   return isCoords;
 };
-
-export const getRoomCode = () => {
-  return Math.random() * (9999 - 1000) + 1000;
-}

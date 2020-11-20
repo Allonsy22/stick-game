@@ -1,32 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const rooms = require('./game/rooms');
 
 const Game = require('./game/Game');
 const game = new Game();
+
+const gameRoutes = require('./api/routes/gameRoom');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
+app.use('/gameRoom', gameRoutes);
+
 const port = process.env.PORT || 3333;
 
 app.get('/', (req, res) => {
-  console.log(game.getAvailableMoves());
-  res.status(200).json(game.getAvailableMoves());
+  res.status(200).json(rooms);
 });
 
 app.post('/', (req, res) => {
-  const i = req.body.i;
-  const j = req.body.j;
-  res.status(200).json(game.makeMove(i, j));
-})
+  res.status(200).json(req.body);
+});
 
 const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-const rooms = [];
 
 const io = require('socket.io')(server, { origins: '*' });
 
@@ -35,9 +35,6 @@ io.on('connection', (socket) => {
   const type = socket.request._query['type'];
   const room = socket.request._query['room'];
 
-  if (rooms.includes(room) && type === 'Create') {
-
-  }
   socket.join('game');
   
   socket.on('create-game', (size) => {

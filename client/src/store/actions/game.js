@@ -1,11 +1,16 @@
 import * as actionTypes from './actionTypes';
 import socketApi from '../../utils/socketApi';
+import axios from 'axios';
 
 const socket = new socketApi();
+const URI = "http://localhost:3333/gameRoom/";
 
 export const createGame = (size) => {
     socket.connect(22, 'Create');
     socket.emit('create-game', size);
+    axios.post(URI, {owner: 'Red'}).then( response => {
+        console.log(response);
+    });
     return dispatch => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));

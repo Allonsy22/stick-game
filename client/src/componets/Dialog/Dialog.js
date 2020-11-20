@@ -7,7 +7,11 @@ import * as actions from '../../store/actions/index';
 
 class Dialog extends Component {
   renderCreateDialog() {
-    const { isCreateGameDialog, closeCreateGameDialog } = this.props;
+    const { 
+      isCreateGameDialog, 
+      closeCreateGameDialog,
+      createGame
+     } = this.props;
     return (
       <Modal show={isCreateGameDialog} onHide={() => {}}>
         <Modal.Header>
@@ -21,7 +25,7 @@ class Dialog extends Component {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
-          <Button variant="primary">Submit</Button>
+          <Button variant="primary" onClick={() => createGame()}>Submit</Button>
         </Modal.Footer>
       </Modal>
     )
@@ -70,6 +74,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeCreateGameDialog: () => dispatch(actions.closeCreateGameDialog()),
     closeJoinGameDialog: () => dispatch(actions.closeJoinGameDialog()),
+    createGame: () => dispatch(actions.createGame(2)),
   }
 }
 
