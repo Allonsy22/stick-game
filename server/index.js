@@ -7,12 +7,14 @@ const Game = require('./game/Game');
 const game = new Game();
 
 const gameRoutes = require('./api/routes/gameRoom');
+const loginRoutes = require('./api/routes/login');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
 app.use('/gameRoom', gameRoutes);
+app.use('/login', loginRoutes);
 
 const port = process.env.PORT || 3333;
 
@@ -36,7 +38,7 @@ io.on('connection', (socket) => {
   const room = socket.request._query['room'];
 
   socket.join('game');
-  
+
   socket.on('create-game', (size) => {
     createGame(size);
     socket.emit('get-available-moves', game.getAvailableMoves());
@@ -46,7 +48,7 @@ io.on('connection', (socket) => {
     if (response.isNextTurn === true) {
       socket.emit('get-player-owned-square', response.ownedSquareCoords);
       socket.broadcast.to('game').emit('get-opponent-owned-square', response.ownedSquareCoords);
-    } else if(response.isNextTurn === false) {
+    } else if (response.isNextTurn === false) {
       io.to('game').emit('nextTurn');
     }
     io.to('game').emit('get-available-moves', response.availableMoves);
@@ -61,5 +63,5 @@ io.on('connection', (socket) => {
 });
 
 function createGame(size) {
-  game.newGame({size});
+  game.newGame({ size });
 }
