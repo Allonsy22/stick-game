@@ -21,7 +21,7 @@ app.use('/auth', authRoutes);
 const port = process.env.PORT || 3333;
 
 app.get('/', (req, res) => {
-  res.status(200).json(rooms);
+  
 });
 
 app.post('/', (req, res) => {
