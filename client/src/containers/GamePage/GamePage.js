@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
 
 class GamePage extends Component {
   render() {
-    const { player, winner } = this.props;
+    const { player, winner, size, user: currentUser, isLoggedIn } = this.props;
+
+    if (!currentUser || !isLoggedIn) {
+      return <Redirect to="/auth"/>
+    }
     return (
       <Container>
-        <Canvas size={2} />
-        <div display="flex">
-          <Button
-            variant="primary"
-            className="StartPage-button"
-            onClick={() => this.props.createGame(2)}
-          >Create Game</Button>
-          <Button
-            variant="primary"
-            className="StartPage-button"
-            onClick={() => this.props.joinGame()}
-          >Join Game</Button>
-        </div>
+        <Canvas size={size} />
         <p>Player: {player}</p>
         {winner ? <p>Winner: {winner} </p> : null}
       </Container>
@@ -37,14 +31,4 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    createGame: (size) => dispatch(actions.createGame(size)),
-    joinGame: () => dispatch(actions.joinGame()),
-    showCreateGameDialog: () => dispatch(actions.showCreateGameDialog()),
-    showJoinGameDialog: () => dispatch(actions.showJoinGameDialog()),
-    logout: () => dispatch(actions.logout()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
+export default connect(mapStateToProps, null)(GamePage);

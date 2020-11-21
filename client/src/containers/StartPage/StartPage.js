@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
-import { Canvas, Dialog } from '../../componets';
+import { Dialog } from '../../componets';
+import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import './StartPage.css';
 
@@ -15,10 +16,26 @@ class StartPage extends Component {
     }
     const { showCreateGameDialog, showJoinGameDialog } = this.props;
     return (
-      <div className="StartPage-container">
-        <Button onClick={() => logout()}>Log Out</Button>
+      <Container className="StartPage-container">
+        <h4>Welcome to the game Dots and Boxes</h4>
+        <Button 
+          className="StartPage-logout" 
+          onClick={() => logout()}
+        >Log Out</Button>
         <Dialog />
-      </div>
+        <div display="flex">
+          <Button
+            variant="primary"
+            className="StartPage-button"
+            onClick={() => showCreateGameDialog()}
+          >Create Game</Button>
+          <Button
+            variant="primary"
+            className="StartPage-button"
+            onClick={() => showJoinGameDialog()}
+          >Join Game</Button>
+        </div>
+      </Container>
     )
   }
 }

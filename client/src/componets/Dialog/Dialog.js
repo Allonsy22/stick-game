@@ -41,7 +41,6 @@ class Dialog extends Component {
 
         <Modal.Body>
           <input type="text"/>
-          <Select />
         </Modal.Body>
 
         <Modal.Footer>
