@@ -1,6 +1,7 @@
 # Dots and boxes
 
 Dots and boxes is a game created using React and Redux as client side and Node.js(Express.js) as server side.
+For db was used PostgreSQL. 
 
 ## Installation
 
@@ -13,6 +14,10 @@ cd client && npm install
 _server_
 ```
 cd server && npm install
+```
+_database_
+```
+Install db from official web page: https://www.postgresql.org/
 ```
 ## Usage
 _client folder_
