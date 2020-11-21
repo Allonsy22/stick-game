@@ -7,10 +7,6 @@ import Line from './Line/Line';
 import './Canvas.css';
 
 class Canvas extends Component {
-  state = {
-    size: this.props.size,
-  };
-
   makeMove(props) {
     const { i, j } = props;
     const isCoords = isCoordsInArray({
@@ -77,7 +73,7 @@ class Canvas extends Component {
   }
 
   renderField() {
-    let { size } = this.state;
+    let { size } = this.props;
     size = 2 * size - 1;
     const rows = [];
     for (let i = 0; i < size; i++) {
@@ -92,17 +88,16 @@ class Canvas extends Component {
 
   render() {
     return (
-      <div id="canvas" className="Canvas">{this.renderField()}</div>
+      <div className="Canvas">
+        {this.renderField()}
+      </div>
     )
   }
 }
 
-Canvas.propTypes = {
-  size: PropTypes.number.isRequired,
-};
-
 const mapStateToProps = state => {
   return {
+    size: state.game.size,
     player: state.game.player,
     opponent: state.game.opponent,
     isNextTurn: state.game.isNextTurn,

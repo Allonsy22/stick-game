@@ -3,19 +3,26 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 class GamePage extends Component {
   render() {
     const { player, winner, size, user: currentUser, isLoggedIn } = this.props;
 
     if (!currentUser || !isLoggedIn) {
-      return <Redirect to="/auth"/>
+      return <Redirect to="/auth" />
     }
     return (
-      <Container>
-        <Canvas size={size} />
-        <p>Player: {player}</p>
-        {winner ? <p>Winner: {winner} </p> : null}
+      <Container className="Container">
+        <Row className="justify-content-md-center">
+          <Canvas size={size} />
+        </Row>
+        <Row className="justify-content-md-center">
+          <p>Player: {player}</p>
+        </Row>
+        <Row className="justify-content-md-center">
+          {winner ? <p>Winner: {winner} </p> : null}
+        </Row>
       </Container>
     )
   }
