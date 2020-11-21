@@ -32,11 +32,12 @@ class GamePage extends Component {
     }
     return (
       <Container className="mt-3">
-        <Row className="justify-content-md-center">
+        {/* <Row className="justify-content-md-center">
           {isOpponentReady 
             ? <Canvas size={size} />
             :  this.renderSpiner()}
-        </Row>
+        </Row> */}
+        <Canvas size={size} />
         <Row className="justify-content-md-center">
           <p>Room code: <b>{roomCode}</b></p>
         </Row>

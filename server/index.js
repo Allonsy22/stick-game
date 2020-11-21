@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const rooms = require('./game/rooms');
-const { getRoomCode } = require('./utils/utils');
+const { getUniqueRoomCode } = require('./utils/utils');
 
 const Game = require('./game/Game');
 const game = new Game();
@@ -43,7 +43,6 @@ io.on('connection', (socket) => {
 
   socket.on('create-game', (size) => {
     createGame(size);
-    socket.emit('get-room-code', getRoomCode());
     socket.emit('get-available-moves', game.getAvailableMoves());
   });
   socket.on('make-move', (coords) => {

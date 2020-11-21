@@ -1,17 +1,23 @@
-const getRoomCode = () => {
-  return Math.floor(Math.random() * (9999 - 1000) + 1000);
+const rooms = require('../game/rooms');
+
+const getUniqueRoomCode = () => {
+  let roomCode = Math.floor(Math.random() * (9999 - 1000) + 1000);
+  while(true) {
+    if (isRoomExist(roomCode)) {
+      roomCode = Math.floor(Math.random() * (9999 - 1000) + 1000);
+    } else return roomCode;
+  }
 };
 
-const isRoom = (props) => {
-  const { roomId, rooms } = props;
-  let isExistRoom = false;
-  rooms.forEach( room => {
-    if (room.id === roomId) isExistRoom = true;
-  });
-  return isExistRoom;
+const isRoomAvailable = (roomCode) => {
+  return rooms[roomCode] && rooms[roomCode]['join'] === false;
+};
+
+const isRoomExist = (roomCode) => {
+  return rooms[roomCode];
 };
 
 module.exports = {
-  getRoomCode,
-  isRoom,
+  getUniqueRoomCode,
+  isRoomAvailable,
 };

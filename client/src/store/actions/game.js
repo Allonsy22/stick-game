@@ -4,7 +4,7 @@ import socketApi from '../../utils/socketApi';
 const socket = new socketApi();
 
 export const createGame = (size) => {
-    socket.connect(22, 'Create');
+    socket.connect(22, 'create');
     socket.emit('create-game', size);
     return dispatch => {
         socket.on('get-room-code', (code) => {
@@ -39,8 +39,8 @@ export const createGame = (size) => {
     };
 };
 
-export const joinGame = () => {
-    socket.connect(22, 'Join');
+export const joinGame = (roomCode) => {
+    socket.connect(roomCode, 'join');
     return dispatch => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
