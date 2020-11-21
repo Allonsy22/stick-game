@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Select } from '../index';
 import * as actions from '../../store/actions/index';
 
 class Dialog extends Component {
+  onSubmitCreateGameHandler() {
+    const { size, createGame } = this.props;
+    createGame(size);
+  };
+
   renderCreateDialog() {
-    const { 
-      isCreateGameDialog, 
+    const {
+      isCreateGameDialog,
       closeCreateGameDialog,
-      createGame,
-      size,
-     } = this.props;
+    } = this.props;
     return (
-      <Modal show={isCreateGameDialog} onHide={() => {}}>
+      <Modal show={isCreateGameDialog} onHide={() => { }}>
         <Modal.Header>
           <Modal.Title>Create Game</Modal.Title>
         </Modal.Header>
@@ -26,7 +30,7 @@ class Dialog extends Component {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
-          <Button variant="primary" onClick={() => createGame(size)}>Submit</Button>
+          <Button variant="primary" onClick={() => this.onSubmitCreateGameHandler()}>Submit</Button>
         </Modal.Footer>
       </Modal>
     )
@@ -35,14 +39,14 @@ class Dialog extends Component {
   renderJoinDialog() {
     const { isJoinGameDialog, closeJoinGameDialog } = this.props;
     return (
-      <Modal show={isJoinGameDialog} onHide={() => {}}>
+      <Modal show={isJoinGameDialog} onHide={() => { }}>
         <Modal.Header>
           <Modal.Title>Join Game</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <p>Input the room code</p>
-          <input type="text"/>
+          <input type="text" />
         </Modal.Body>
 
         <Modal.Footer>
@@ -54,12 +58,16 @@ class Dialog extends Component {
   }
 
   render() {
-    return (
-      <>
-        {this.renderCreateDialog()}
-        {this.renderJoinDialog()}
-      </>
-    )
+    const { roomCode } = this.props;
+    if (roomCode) {
+      return <Redirect to={`/game/${roomCode}`}/>
+    }
+      return (
+        <>
+          {this.renderCreateDialog()}
+          {this.renderJoinDialog()}
+        </>
+      )
   }
 };
 
@@ -68,6 +76,7 @@ const mapStateToProps = state => {
     isCreateGameDialog: state.dialog.isCreateGameDialog,
     isJoinGameDialog: state.dialog.isJoinGameDialog,
     size: state.game.size,
+    roomCode: state.game.roomCode,
   };
 }
 

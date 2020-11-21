@@ -4,18 +4,26 @@ import { updateObject } from '../../utils/utils';
 const players = ['Red', 'Blue'];
 
 const initialState = {
+  size: 3,
+  winner: null,
   player: null,
   opponent: null,
+  roomCode: null,
+  gameOver: false,
   isNextTurn: true,
   opponentTurn: false,
-  size: 3,
-  gameOver: false,
-  winner: null,
+  isOpponentReady: false,
   availableMoves: [],
   playerMadeMoves: [],
   opponentMadeMoves: [],
   playerOwnedSquares: [],
   opponentOwnedSquares: [],
+};
+
+const setRoomCode = (state, action) => {
+  return updateObject(state, {
+    roomCode: action.roomCode,
+  });
 };
 
 const setGameSize = (state, action) => {
@@ -53,14 +61,14 @@ const gameOver = (state) => {
   if (diff < 0) winner = state.opponent;
   return updateObject(state, {
     gameOver: true,
-    winner, 
+    winner,
   });
 };
 
 const makeMove = (state, action) => {
   return updateObject(state, {
     playerMadeMoves: [...state.playerMadeMoves, action.coords]
-  }); 
+  });
 };
 
 const getOpponentMove = (state, action) => {
@@ -89,6 +97,7 @@ const setOpponentOwnedSquare = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_ROOM_CODE: return setRoomCode(state, action);
     case actionTypes.SET_GAME_SIZE: return setGameSize(state, action);
     case actionTypes.SET_FIRST_PLAYER: return setFirstPlayer(state, action);
     case actionTypes.SET_SECOND_PLAYER: return setSecondPlayer(state, action);

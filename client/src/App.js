@@ -5,6 +5,10 @@ import { AuthPage, StartPage, GamePage } from './containers';
 import './App.css';
 
 class App extends Component {
+  componentWillUnmount() {
+    localStorage.removeItem('persist:root');
+  };
+
   render() {
     return (
       <div>

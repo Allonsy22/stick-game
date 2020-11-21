@@ -4,18 +4,41 @@ import { Redirect } from 'react-router-dom';
 import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Spinner from 'react-bootstrap/Spinner';
 
 class GamePage extends Component {
+  renderSpiner() {
+    return (
+      <Row>
+        <Spinner animation="border"></Spinner>
+        <span>Waiting for opponent</span>
+      </Row>
+    )
+  };
+
   render() {
-    const { player, winner, size, user: currentUser, isLoggedIn } = this.props;
+    const { 
+      player, 
+      winner, 
+      size,
+      roomCode,
+      user: currentUser, 
+      isLoggedIn,
+      isOpponentReady,
+     } = this.props;
 
     if (!currentUser || !isLoggedIn) {
       return <Redirect to="/auth" />
     }
     return (
-      <Container className="Container">
+      <Container className="mt-3">
         <Row className="justify-content-md-center">
-          <Canvas size={size} />
+          {isOpponentReady 
+            ? <Canvas size={size} />
+            :  this.renderSpiner()}
+        </Row>
+        <Row className="justify-content-md-center">
+          <p>Room code: <b>{roomCode}</b></p>
         </Row>
         <Row className="justify-content-md-center">
           <p>Player: {player}</p>
@@ -33,6 +56,8 @@ const mapStateToProps = state => {
     player: state.game.player,
     size: state.game.size,
     winner: state.game.winner,
+    isOpponentReady: state.game.isOpponentReady,
+    roomCode: state.game.roomCode,
     user: state.auth.user,
     isLoggedIn: state.auth.isLoggedIn,
   };
