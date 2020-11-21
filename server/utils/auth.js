@@ -5,7 +5,7 @@ const User = db.user;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-exports.signup = (req, res) => {
+const signup = (req, res) => {
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
@@ -18,10 +18,10 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+const signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
     .then(user => {
@@ -55,4 +55,21 @@ exports.signin = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+// function for testing
+const getAll = (req, res) => {
+  User.findAll()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(error => {
+      res.status(500).send({ message: error.message });
+    });
+};
+
+module.exports = {
+  signup,
+  signin,
+  getAll,
 };

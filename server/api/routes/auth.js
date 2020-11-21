@@ -13,17 +13,15 @@ router.use(function(req, res, next) {
 });
 
 router.post(
-  "/api/auth/signup",
+  "/signup",
   [
     verifySignUp.checkDuplicateEmail,
   ],
   auth.signup
 );
 
-router.post("/api/auth/signin", auth.signin);
+router.post("/signin", auth.signin);
 
-router.get('/', (req, res) => {
-  res.status(200).json('Hello');
-});
+router.get('/', auth.getAll);
 
 module.exports = router;
