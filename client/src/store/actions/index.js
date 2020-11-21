@@ -15,4 +15,5 @@ export {
   login,
   logout,
   register,
+  cleareMessage,
 } from './auth';

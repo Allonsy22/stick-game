@@ -22,6 +22,6 @@ router.post(
 
 router.post("/signin", auth.signin);
 
-router.get('/', [authJwt.verifyToken], auth.getAll);
+router.get('/', auth.getAll);
 
 module.exports = router;

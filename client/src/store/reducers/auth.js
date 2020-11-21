@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/utils';
+import { cleareMessage } from '../actions';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -16,7 +17,7 @@ const registerSuccess = (state) => {
 const registerFail = (state, action) => {
   return updateObject(state, {
     isLoggedIn: false,
-    message: action.message.toString()
+    message: action.message
   });
 };
 
@@ -31,7 +32,7 @@ const loginFail = (state, action) => {
   return updateObject(state, {
     isLoggedIn: false,
     user: null,
-    message: action.message.toString()
+    message: action.message
   });
 };
 
@@ -42,6 +43,12 @@ const logout = (state) => {
   });
 };
 
+const clearMessage = (state) => {
+  return updateObject(state, {
+    message: '',
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.REGISTER_SUCCESS: return registerSuccess(state);
@@ -49,6 +56,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LOGIN_SUCCESS: return loginSuccess(state, action);
     case actionTypes.LOGIN_FAIL: return loginFail(state, action);
     case actionTypes.LOGOUT: return logout(state);
+    case actionTypes.CLEAR_MESSAGE: return cleareMessage(state);
     default: return state;
   }
 };

@@ -10,9 +10,15 @@ export const register = (email, password) => (dispatch) => {
       return Promise.resolve(response);
     },
     (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
       dispatch({
         type: actionTypes.REGISTER_FAIL,
-        message: error,
+        message,
       });
       return Promise.reject();
     }
@@ -30,9 +36,15 @@ export const login = (email, password) => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
       dispatch({
         type: actionTypes.LOGIN_FAIL,
-        message: error,
+        message,
       });
       return Promise.reject();
     }
@@ -40,9 +52,15 @@ export const login = (email, password) => (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  AuthService.logout();
+  Auth.logout();
 
   dispatch({
     type: actionTypes.LOGOUT,
   });
+};
+
+export const cleareMessage = () => {
+  return {
+    type: actionTypes.CLEAR_MESSAGE,
+  };
 };

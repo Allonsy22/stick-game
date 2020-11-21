@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -20,11 +21,23 @@ class AuthPage extends Component {
   };
 
   showLoginForm() {
-    this.setState({ loginForm: true, regForm: false });
+    this.setState({ 
+      loginForm: true, 
+      regForm: false,
+      errorMsgs: [],
+      password: '',
+     });
+     this.props.clearMessage();
   };
 
   showRegForm() {
-    this.setState({ regForm: true, loginForm: false })
+    this.setState({ 
+      regForm: true, 
+      loginForm: false,
+      errorMsgs: [],
+      password: '',
+     });
+     this.props.clearMessage();
   };
 
   simpleValid() {
@@ -37,6 +50,7 @@ class AuthPage extends Component {
       errorMsgs.push('Password from 5 to 10 char');
     }
     this.setState({errorMsgs});
+    return errorMsgs.length === 0;
   };
 
   onInputchange(event) {
@@ -45,16 +59,14 @@ class AuthPage extends Component {
     });
   };
 
-  onSubmitLoginHandler() {
-    this.simpleValid();
-    if (this.state.errorMsgs.length > 0) return;
-    this.props.login();
+  onSubmitRegisterHandler() {
+    const { email, password } = this.state;
+    if (this.simpleValid()) this.props.register(email, password);
   };
 
-  onSubmitRegisterHandler() {
-    this.simpleValid();
-    if (this.state.errorMsgs.length > 0) return;
-    this.props.register();
+  onSubmitLoginHandler() {
+    const { email, password } = this.state;
+    if (this.simpleValid()) this.props.login(email, password);
   };
 
   renderLoginForm() {
@@ -71,7 +83,7 @@ class AuthPage extends Component {
           <Form.Label>Password</Form.Label>
           <Form.Control name="password" type="password" value={password} onChange={this.onInputchange} />
         </Form.Group>
-        <Button variant="primary" onClick={() => this.onSubmitHandler()}>
+        <Button variant="primary" onClick={() => this.onSubmitLoginHandler()}>
           Submit
         </Button>
         <Button
@@ -98,7 +110,7 @@ class AuthPage extends Component {
           <Form.Control name="password" type="password" value={password} onChange={this.onInputchange}/>
         </Form.Group>
 
-        <Button variant="primary" onClick={() => this.onSubmitHandler()}>
+        <Button variant="primary" onClick={() => this.onSubmitRegisterHandler()}>
           Submit
         </Button>
         <Button
@@ -112,9 +124,17 @@ class AuthPage extends Component {
 
   render() {
     const { loginForm, errorMsgs } = this.state;
+    const { isLoggedIn, user: currentUser } = this.props;
+
+    if (isLoggedIn) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div className="AuthPage-container">
-        <h3>Auth to play the game</h3>
+        {!currentUser 
+          ? <h4>Signin to play the game</h4> 
+          : <h4>Signin or signup to play the game</h4>}
         <p className="AuthPage-error">{this.props.message}</p>
         {loginForm ? this.renderLoginForm() : this.renderRegForm()}
         {errorMsgs.map( (msg, index) => (<p key={index}>{msg}</p>))}
@@ -126,6 +146,7 @@ class AuthPage extends Component {
 const mapStateToProps = state => {
   return {
     isLoggedIn: state.auth.isLoggedIn,
+    user: state.auth.user,
     message: state.auth.message,
   };
 }
@@ -134,6 +155,7 @@ const mapDispatchToProps = dispatch => {
   return {
     login: (email, password) => dispatch(actions.login(email, password)),
     register: (email, password) => dispatch(actions.register(email, password)),
+    clearMessage: () => dispatch(actions.cleareMessage()),
   }
 }
 
