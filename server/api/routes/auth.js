@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { verifySignUp } = require('../../middleware');
+const { verifySignUp, authJwt } = require('../../middleware');
 const auth = require('../../utils/auth');
 
 router.use(function(req, res, next) {
@@ -22,6 +22,6 @@ router.post(
 
 router.post("/signin", auth.signin);
 
-router.get('/', auth.getAll);
+router.get('/', [authJwt.verifyToken], auth.getAll);
 
 module.exports = router;
