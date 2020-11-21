@@ -5,7 +5,6 @@ import * as actions from '../../../store/actions';
 
 class Select extends Component {
   state = {
-    size: null,
     sizes: [
       {value: 3, text: '3x3'},
       {value: 5, text: '5x5'},
@@ -13,11 +12,18 @@ class Select extends Component {
     ]
   };
 
+  onValueChange(event) {
+    const size = event.target.value;
+    this.props.setGameSize(size);
+  };
+
   render() {
     const { sizes } = this.state;
+    const { size } = this.state;
     return (
       <Container>
-        <select>
+        <p>{size}</p>
+        <select onChange={(event) => this.onValueChange(event)}>
           {sizes.map( (size, index) => {
             return <option key={index} value={size.value}>{size.text}</option>
           })}

@@ -20,7 +20,7 @@ const initialState = {
 
 const setGameSize = (state, action) => {
   return updateObject(state, {
-    size: action.size,
+    size: parseInt(action.size),
   });
 };
 

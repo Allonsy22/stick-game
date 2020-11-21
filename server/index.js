@@ -41,6 +41,7 @@ io.on('connection', (socket) => {
   socket.join('game');
 
   socket.on('create-game', (size) => {
+    console.log(size);
     createGame(size);
     socket.emit('get-available-moves', game.getAvailableMoves());
   });

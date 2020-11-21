@@ -10,7 +10,8 @@ class Dialog extends Component {
     const { 
       isCreateGameDialog, 
       closeCreateGameDialog,
-      createGame
+      createGame,
+      size,
      } = this.props;
     return (
       <Modal show={isCreateGameDialog} onHide={() => {}}>
@@ -25,7 +26,7 @@ class Dialog extends Component {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
-          <Button variant="primary" onClick={() => createGame()}>Submit</Button>
+          <Button variant="primary" onClick={() => createGame(size)}>Submit</Button>
         </Modal.Footer>
       </Modal>
     )
@@ -66,6 +67,7 @@ const mapStateToProps = state => {
   return {
     isCreateGameDialog: state.dialog.isCreateGameDialog,
     isJoinGameDialog: state.dialog.isJoinGameDialog,
+    size: state.game.size,
   };
 }
 
@@ -74,7 +76,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeCreateGameDialog: () => dispatch(actions.closeCreateGameDialog()),
     closeJoinGameDialog: () => dispatch(actions.closeJoinGameDialog()),
-    createGame: () => dispatch(actions.createGame(2)),
+    createGame: (size) => dispatch(actions.createGame(size)),
   }
 }
 

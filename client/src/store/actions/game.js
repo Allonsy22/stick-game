@@ -7,6 +7,7 @@ const URI = "http://localhost:3333/gameRoom/";
 
 export const createGame = (size) => {
     socket.connect(22, 'Create');
+    console.log(size);
     socket.emit('create-game', size);
     axios.post(URI, {owner: 'Red'}).then( response => {
         console.log(response);
