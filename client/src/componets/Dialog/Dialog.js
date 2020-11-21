@@ -19,7 +19,7 @@ class Dialog extends Component {
         </Modal.Header>
 
         <Modal.Body>
-          <p>Modal body text goes here.</p>
+          <p>Select game size</p>
           <Select />
         </Modal.Body>
 
@@ -40,6 +40,7 @@ class Dialog extends Component {
         </Modal.Header>
 
         <Modal.Body>
+          <p>Input the room code</p>
           <input type="text"/>
         </Modal.Body>
 

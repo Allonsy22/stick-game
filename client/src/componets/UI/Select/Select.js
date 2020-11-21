@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Container from 'react-bootstrap/Container';
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
 
-const Select = (props) => {
-  return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Dropdown Button
-      </Dropdown.Toggle>
+class Select extends Component {
+  state = {
+    size: null,
+    sizes: [
+      {value: 3, text: '3x3'},
+      {value: 5, text: '5x5'},
+      {value: 7, text: '7x7'},
+    ]
+  };
 
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  )
+  render() {
+    const { sizes } = this.state;
+    return (
+      <Container>
+        <select>
+          {sizes.map( (size, index) => {
+            return <option key={index} value={size.value}>{size.text}</option>
+          })}
+        </select>
+      </Container>
+    )
+  }
 };
 
-export default Select;
+const mapDispatchToProps = dispatch => {
+  return {
+    setGameSize: (size) => dispatch(actions.setGameSize(size)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Select);

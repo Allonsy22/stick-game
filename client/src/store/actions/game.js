@@ -71,6 +71,13 @@ export const joinGame = () => {
     };
 };
 
+export const setGameSize = (size) => {
+    return {
+        type: actionTypes.SET_GAME_SIZE,
+        size,
+    };
+};
+
 export const setFirstPlayer = () => {
     return {
         type: actionTypes.SET_FIRST_PLAYER,
@@ -128,5 +135,5 @@ export const setOpponentOwnedSquare = (squareCoords) => {
 export const gameOver = () => {
     return {
         type: actionTypes.GAME_OVER,
-    }
-}
+    };
+};

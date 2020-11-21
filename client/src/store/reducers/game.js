@@ -18,6 +18,12 @@ const initialState = {
   opponentOwnedSquares: [],
 };
 
+const setGameSize = (state, action) => {
+  return updateObject(state, {
+    size: action.size,
+  });
+};
+
 const setFirstPlayer = (state, action) => {
   return updateObject(state, {
     player: players[0],
@@ -83,6 +89,7 @@ const setOpponentOwnedSquare = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SET_GAME_SIZE: return setGameSize(state, action);
     case actionTypes.SET_FIRST_PLAYER: return setFirstPlayer(state, action);
     case actionTypes.SET_SECOND_PLAYER: return setSecondPlayer(state, action);
     case actionTypes.GET_AVAILABLE_MOVES: return getAvailableMoves(state, action);

@@ -2,6 +2,7 @@ export {
   createGame,
   joinGame,
   makeMove,
+  setGameSize,
 } from './game';
 
 export {
