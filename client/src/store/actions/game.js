@@ -2,9 +2,10 @@ import * as actionTypes from './actionTypes';
 import socketApi from '../../utils/socketApi';
 
 const socket = new socketApi();
+const ROOM_CODE = 'test';
 
-export const createGame = (size) => {
-    socket.connect(22, 'create');
+export const createGame = (size, roomCode) => {
+    socket.connect(ROOM_CODE, 'create');
     socket.emit('create-game', size);
     return dispatch => {
         socket.on('get-room-code', (code) => {
@@ -40,7 +41,7 @@ export const createGame = (size) => {
 };
 
 export const joinGame = (roomCode) => {
-    socket.connect(roomCode, 'join');
+    socket.connect(ROOM_CODE, 'join');
     return dispatch => {
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
