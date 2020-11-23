@@ -14,13 +14,13 @@ class Dialog extends Component {
     showAlert: false,
   };
 
-  onSubmitCreateGameHandler() {
+  onCreateButtonClick() {
     const { getRoomCode } = this.props;
     getRoomCode();
     this.setShowAlert(true);
   };
 
-  onSubmitJoinGameHandler() {
+  onJoinButtonClick() {
     const { setRoomCode } = this.props;
     const { roomValue } = this.state;
     setRoomCode(roomValue);
@@ -35,14 +35,14 @@ class Dialog extends Component {
     this.setState({ showAlert: isAlert });
   };
 
-  test() {
+  onSubmitCreateGame() {
     const { size, createGame, roomCode } = this.props;
     createGame(size, roomCode);
     this.setState({ isGame: true });
     this.setShowAlert(false);
   }
 
-  test2() {
+  onSubmitJoinGame() {
     const { joinGame, roomCode } = this.props;
     joinGame(roomCode);
     this.setState({ isGame: true });
@@ -54,27 +54,29 @@ class Dialog extends Component {
     const { showAlert } = this.state;
     return (
       <Modal show={isCreateGameDialog} onHide={() => { }}>
-        <Alert show={showAlert} variant="success">
-          <Alert.Heading>Your room is {roomCode}</Alert.Heading>
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => this.test()} variant="outline-success">
-              OK!
-            </Button>
-          </div>
-        </Alert>
         <Modal.Header>
           <Modal.Title>Create Game</Modal.Title>
         </Modal.Header>
+        { showAlert
+          ? <Alert show={showAlert} variant="success">
+            <Alert.Heading>Your room is {roomCode}</Alert.Heading>
+            <div className="d-flex justify-content-end">
+              <Button onClick={() => this.onSubmitCreateGame()} variant="outline-success">
+                OK!
+              </Button>
+            </div>
+          </Alert>
+          : <>
+            <Modal.Body>
+              <p>Select game size</p>
+              <Select />
+            </Modal.Body>
 
-        <Modal.Body>
-          <p>Select game size</p>
-          <Select />
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
-          <Button variant="primary" onClick={() => this.onSubmitCreateGameHandler()}>Submit</Button>
-        </Modal.Footer>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => closeCreateGameDialog()}>Close</Button>
+              <Button variant="primary" onClick={() => this.onCreateButtonClick()}>Create</Button>
+            </Modal.Footer>
+          </>}
       </Modal>
     )
   };
@@ -84,27 +86,29 @@ class Dialog extends Component {
     const { roomValue, showAlert } = this.state;
     return (
       <Modal show={isJoinGameDialog} onHide={() => { }}>
-        <Alert show={showAlert} variant="success">
-          <Alert.Heading>You are joing to the room {roomCode}</Alert.Heading>
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => this.test2()} variant="outline-success">
-              OK!
-            </Button>
-          </div>
-        </Alert>
         <Modal.Header>
           <Modal.Title>Join Game</Modal.Title>
         </Modal.Header>
+        { showAlert
+          ? <Alert show={showAlert} variant="success">
+            <Alert.Heading>You are joing to the room {roomCode}</Alert.Heading>
+            <div className="d-flex justify-content-end">
+              <Button onClick={() => this.onSubmitJoinGame()} variant="outline-success">
+                OK!
+              </Button>
+            </div>
+          </Alert>
+          : <>
+            <Modal.Body>
+              <p>Input the room code</p>
+              <input type="text" value={roomValue} onChange={(event) => this.onInputChange(event)} />
+            </Modal.Body>
 
-        <Modal.Body>
-          <p>Input the room code</p>
-          <input type="text" value={roomValue} onChange={(event) => this.onInputChange(event)} />
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => closeJoinGameDialog()}>Close</Button>
-          <Button variant="primary" onClick={() => this.onSubmitJoinGameHandler()}>Submit</Button>
-        </Modal.Footer>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => closeJoinGameDialog()}>Close</Button>
+              <Button variant="primary" onClick={() => this.onJoinButtonClick()}>Join</Button>
+            </Modal.Footer>
+          </>}
       </Modal>
     )
   }
