@@ -1,7 +1,6 @@
 const socket = require('socket.io');
 
 const Game = require('../../game/Game');
-game = new Game();
 const roomUtils = require('../../game/rooms');
 
 module.exports = {
@@ -17,22 +16,32 @@ module.exports = {
       const workspace = socket.nsp;
       const type = socket.handshake.query['type'];
       const roomCode = socket.handshake.query['room'];
-      
+      console.log(`socket ${type} connected to room ${roomCode}`);
+
+      let game;
+      if (type === 'create') {
+        game = new Game();
+        socket.on('create-game', (size) => {
+          game.newGame({size});
+          socket.emit('get-available-moves', game.getAvailableMoves());
+          roomUtils.createRoom(roomCode, game);
+        });
+      }
+      if (type === 'join') {
+        if (roomUtils.isRoomAvailable(roomCode)) {
+          roomUtils.joinRoom(roomCode);
+          game = roomUtils.getRoomGame(roomCode);
+          socket.on('join-game', () => {
+            socket.emit('get-game-size', game.getSize());
+          });
+        }
+      }
       connectToNamespace(workspace, socket, game);
-      
-      console.log(roomUtils.getRooms());
     });
   }
 };
 
 function connectToNamespace(nsp, socket, game) {
-  socket.on('create-game', (size) => {
-    game.newGame(size);
-    socket.emit('get-available-moves', game.getAvailableMoves());
-  });
-  socket.on('join-game', () => {
-    socket.emit('get-game-size', game.getSize());
-  });
   socket.on('make-move', (coords) => {
     const response = game.makeMove(coords);
     if (response.isNextTurn === true) {
