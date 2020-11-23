@@ -3,6 +3,8 @@ export {
   joinGame,
   makeMove,
   setGameSize,
+  getRoomCode,
+  setRoomCode,
 } from './game';
 
 export {

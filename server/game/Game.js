@@ -83,6 +83,10 @@ class Game {
   getAvailableMoves() {
     return this.availableMoves;
   }
+
+  getSize() {
+    return (this.size + 1) / 2;
+  }
 }
 
 class Square {

@@ -5,6 +5,7 @@ export default class socketAPI {
   socket;
 
   connect(room, type) {
+    console.log('connect to room ' + room);
     this.socket = socketIOClient(URI + room, {
       transports: ['websocket', 'polling'], 
       query : {'room': room, 'type': type},

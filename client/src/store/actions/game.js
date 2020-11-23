@@ -1,17 +1,14 @@
 import * as actionTypes from './actionTypes';
+import axios from 'axios';
+import API_URL from '../../utils/api_url';
 import socketApi from '../../utils/socketApi';
 
 const socket = new socketApi();
-const ROOM_CODE = 'test';
 
 export const createGame = (size, roomCode) => {
-    socket.connect(ROOM_CODE, 'create');
+    socket.connect(roomCode, 'create');
     socket.emit('create-game', size);
     return dispatch => {
-        socket.on('get-room-code', (code) => {
-            dispatch(setRoomCode(code));
-        });
-
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
         });
@@ -19,7 +16,7 @@ export const createGame = (size, roomCode) => {
         socket.on('opponent-move', (coords) => {
             dispatch(getOpponentMove(coords));
         });
-        
+
         socket.on('nextTurn', () => {
             dispatch(setNextTurn());
         });
@@ -41,8 +38,13 @@ export const createGame = (size, roomCode) => {
 };
 
 export const joinGame = (roomCode) => {
-    socket.connect(ROOM_CODE, 'join');
+    socket.connect(roomCode, 'join');
+    socket.emit('join-game');
     return dispatch => {
+        socket.on('get-game-size', size => {
+            dispatch(setGameSize(size));
+        });
+
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
         });
@@ -68,6 +70,18 @@ export const joinGame = (roomCode) => {
         });
 
         dispatch(setSecondPlayer());
+    };
+};
+
+export const getRoomCode = () => {
+    return dispatch => {
+        axios.get(API_URL + 'gameRoom')
+            .then(response => {
+                dispatch(setRoomCode(response.data));
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 };
 

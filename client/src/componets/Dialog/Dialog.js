@@ -3,37 +3,65 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { Select } from '../index';
 import * as actions from '../../store/actions/index';
 
 class Dialog extends Component {
   state = {
-    roomCode: '',
+    roomValue: '',
+    isGame: false,
+    showAlert: false,
   };
 
   onSubmitCreateGameHandler() {
-    const { size, createGame } = this.props;
-    this.setState({roomCode: 22});
-    createGame(size);
+    const { getRoomCode } = this.props;
+    getRoomCode();
+    this.setShowAlert(true);
   };
 
   onSubmitJoinGameHandler() {
-    const { size, joinGame } = this.props;
-    this.setState({roomCode: 22});
-    joinGame(size);
+    const { setRoomCode } = this.props;
+    const { roomValue } = this.state;
+    setRoomCode(roomValue);
+    this.setShowAlert(true);
   };
 
   onInputChange(event) {
-    this.setState({roomCode: event.target.value});
+    this.setState({ roomValue: event.target.value });
   };
 
+  setShowAlert(isAlert) {
+    this.setState({ showAlert: isAlert });
+  };
+
+  test() {
+    const { size, createGame, roomCode } = this.props;
+    createGame(size, roomCode);
+    this.setState({ isGame: true });
+    this.setShowAlert(false);
+  }
+
+  test2() {
+    const { joinGame, roomCode } = this.props;
+    joinGame(roomCode);
+    this.setState({ isGame: true });
+    this.setShowAlert(false);
+  }
+
   renderCreateDialog() {
-    const {
-      isCreateGameDialog,
-      closeCreateGameDialog,
-    } = this.props;
+    const { isCreateGameDialog, closeCreateGameDialog, roomCode } = this.props;
+    const { showAlert } = this.state;
     return (
       <Modal show={isCreateGameDialog} onHide={() => { }}>
+        <Alert show={showAlert} variant="success">
+          <Alert.Heading>Your room is {roomCode}</Alert.Heading>
+          <div className="d-flex justify-content-end">
+            <Button onClick={() => this.test()} variant="outline-success">
+              OK!
+            </Button>
+          </div>
+        </Alert>
         <Modal.Header>
           <Modal.Title>Create Game</Modal.Title>
         </Modal.Header>
@@ -52,17 +80,25 @@ class Dialog extends Component {
   };
 
   renderJoinDialog() {
-    const { isJoinGameDialog, closeJoinGameDialog, joinGame } = this.props;
-    const { roomCode } = this.state;
+    const { isJoinGameDialog, closeJoinGameDialog, roomCode } = this.props;
+    const { roomValue, showAlert } = this.state;
     return (
       <Modal show={isJoinGameDialog} onHide={() => { }}>
+        <Alert show={showAlert} variant="success">
+          <Alert.Heading>You are joing to the room {roomCode}</Alert.Heading>
+          <div className="d-flex justify-content-end">
+            <Button onClick={() => this.test2()} variant="outline-success">
+              OK!
+            </Button>
+          </div>
+        </Alert>
         <Modal.Header>
           <Modal.Title>Join Game</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <p>Input the room code</p>
-          <input type="text" value={roomCode} onChange={(event) => this.onInputChange(event)}/>
+          <input type="text" value={roomValue} onChange={(event) => this.onInputChange(event)} />
         </Modal.Body>
 
         <Modal.Footer>
@@ -74,17 +110,17 @@ class Dialog extends Component {
   }
 
   render() {
-    // const { roomCode } = this.props;
-    const { roomCode } = this.state;
-    if (roomCode) {
-      return <Redirect to={`/game/${roomCode}`}/>
+    const { isGame } = this.state;
+    const { roomCode } = this.props;
+    if (isGame) {
+      return <Redirect to={`/game/${roomCode}`} />
     }
-      return (
-        <>
-          {this.renderCreateDialog()}
-          {this.renderJoinDialog()}
-        </>
-      )
+    return (
+      <>
+        {this.renderCreateDialog()}
+        {this.renderJoinDialog()}
+      </>
+    )
   }
 };
 
@@ -102,8 +138,10 @@ const mapDispatchToProps = dispatch => {
   return {
     closeCreateGameDialog: () => dispatch(actions.closeCreateGameDialog()),
     closeJoinGameDialog: () => dispatch(actions.closeJoinGameDialog()),
-    createGame: (size) => dispatch(actions.createGame(size)),
+    createGame: (size, roomCode) => dispatch(actions.createGame(size, roomCode)),
     joinGame: (roomCode) => dispatch(actions.joinGame(roomCode)),
+    getRoomCode: () => dispatch(actions.getRoomCode()),
+    setRoomCode: (roomCode) => dispatch(actions.setRoomCode(roomCode)),
   }
 }
 
