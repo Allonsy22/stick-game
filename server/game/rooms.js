@@ -33,13 +33,19 @@ const isRoomExist = (roomCode) => {
   return rooms[roomCode];
 };
 
+const getRooms = () => {
+  return rooms;
+};
+
 const roomUtils = {
   getUniqueRoomCode,
   isRoomAvailable,
+  isRoomExist,
   deleteRoom,
   createRoom,
   joinRoom,
   getRoomGame,
+  getRooms,
 };
 
 module.exports = roomUtils;

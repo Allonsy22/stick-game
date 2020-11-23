@@ -59,12 +59,12 @@ class Dialog extends Component {
         </Modal.Header>
         { showAlert
           ? <Alert show={showAlert} variant="success">
-            <Alert.Heading>Your room is {roomCode}</Alert.Heading>
-            <div className="d-flex justify-content-end">
-              <Button onClick={() => this.onSubmitCreateGame()} variant="outline-success">
-                OK!
-              </Button>
-            </div>
+              <Alert.Heading>Your room is {roomCode}</Alert.Heading>
+              <div className="d-flex justify-content-end">
+                <Button onClick={() => this.onSubmitCreateGame()} variant="outline-success">
+                  OK!
+                </Button>
+              </div>
           </Alert>
           : <>
             <Modal.Body>
@@ -91,12 +91,12 @@ class Dialog extends Component {
         </Modal.Header>
         { showAlert
           ? <Alert show={showAlert} variant="success">
-            <Alert.Heading>You are joing to the room {roomCode}</Alert.Heading>
-            <div className="d-flex justify-content-end">
-              <Button onClick={() => this.onSubmitJoinGame()} variant="outline-success">
-                OK!
-              </Button>
-            </div>
+              <Alert.Heading>You join the room {roomCode}</Alert.Heading>
+              <div className="d-flex justify-content-end">
+                <Button onClick={() => this.onSubmitJoinGame()} variant="outline-success">
+                  OK!
+                </Button>
+              </div>
           </Alert>
           : <>
             <Modal.Body>

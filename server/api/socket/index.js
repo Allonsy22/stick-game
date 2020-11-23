@@ -1,6 +1,7 @@
 const socket = require('socket.io');
 
 const Game = require('../../game/Game');
+game = new Game();
 const roomUtils = require('../../game/rooms');
 
 module.exports = {
@@ -16,19 +17,10 @@ module.exports = {
       const workspace = socket.nsp;
       const type = socket.handshake.query['type'];
       const roomCode = socket.handshake.query['room'];
-
-      let game;
-      if (type === 'create') {
-        game = new Game();
-        roomUtils.createRoom(roomCode, game);
-      }
-      if (type === 'join') {
-        if (roomUtils.isRoomAvailable(roomCode)) {
-          roomUtils.joinRoom(roomCode);
-          game = roomUtils.getRoomGame(roomCode);
-        }
-      }
+      
       connectToNamespace(workspace, socket, game);
+      
+      console.log(roomUtils.getRooms());
     });
   }
 };
