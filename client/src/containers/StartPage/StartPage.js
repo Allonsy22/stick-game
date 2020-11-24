@@ -16,7 +16,7 @@ class StartPage extends Component {
     const { showCreateGameDialog, showJoinGameDialog } = this.props;
     return (
       <Container className="StartPage-container">
-        <h4>Welcome to the game Dots and Boxes</h4>
+        <h4 className="text-center">Welcome to the game Dots and Boxes</h4>
         <Dialog />
         <div display="flex">
           <Button

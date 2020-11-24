@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
+import './Toolbar.css';
 
 class Toolbar extends Component {
   state = {
     showDialog: false,
+  };
+
+  onHomeButtonClick() {
+    const { deleteGame, history } = this.props;
+    deleteGame();
+    history.push('/');
   };
 
   onStatisticsButtonClick() {
@@ -54,11 +62,12 @@ class Toolbar extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, statistics } = this.props;
     return (
-      <Container className="mt-4">
-        {this.renderStatisticsDialog()}
-        <Row className="justify-content-end">
+      <Container className="mt-4 Toolbar-container">
+        {statistics && this.renderStatisticsDialog()}
+        <Row className="justify-content-between">
+          <Button className="ml-2" onClick={() => this.onHomeButtonClick()}>Home</Button>
           {user && this.renderButtonGroup()}
         </Row>
       </Container>
@@ -77,7 +86,8 @@ const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(actions.logout()),
     getPlayerStatistics: () => dispatch(actions.getPlayerStatistics()),
+    deleteGame: () => dispatch(actions.deleteGame()),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Toolbar));

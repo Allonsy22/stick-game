@@ -69,7 +69,6 @@ class GamePage extends Component {
 
     return (
       <Container className="mt-3">
-        {this.renderHomePageButton()}
         {!roomCode && this.renderAlert(!roomCode, 'warning', 'This room doesn\'t exist or unavailable')}
         {!connected && isGameReady && this.renderAlert(!connected, 'warning', 'Opponent lost connection')}
         {winner && this.renderAlert(true, 'success', `Winner is ${winner}`)}

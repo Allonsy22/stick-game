@@ -1,0 +1,7 @@
+.Toolbar-container {
+  height: 15vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #D5F0D5;
+}
