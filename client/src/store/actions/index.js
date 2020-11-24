@@ -22,7 +22,7 @@ export {
   cleareMessage,
 } from './auth';
 
-export { 
+export {
   updatePlayerStatistics,
   getPlayerStatistics,
 } from './statistics';

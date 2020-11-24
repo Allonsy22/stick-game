@@ -5,11 +5,9 @@ const initialState = {
   statistics: null,
 };
 
-const setPlayerStatistics = (state, action) => {
-  return updateObject(state, {
-    statistics: action.statistics,
-  });
-};
+const setPlayerStatistics = (state, action) => updateObject(state, {
+  statistics: action.statistics,
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

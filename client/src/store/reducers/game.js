@@ -21,39 +21,29 @@ const initialState = {
   opponentOwnedSquares: [],
 };
 
-const setRoomCode = (state, action) => {
-  return updateObject(state, {
-    roomCode: action.roomCode,
-  });
-};
+const setRoomCode = (state, action) => updateObject(state, {
+  roomCode: action.roomCode,
+});
 
-const setGameSize = (state, action) => {
-  return updateObject(state, {
-    size: parseInt(action.size),
-  });
-};
+const setGameSize = (state, action) => updateObject(state, {
+  size: parseInt(action.size),
+});
 
-const setFirstPlayer = (state, action) => {
-  return updateObject(state, {
-    player: players[0],
-    opponent: players[1],
-    isNextTurn: true,
-  });
-};
+const setFirstPlayer = (state) => updateObject(state, {
+  player: players[0],
+  opponent: players[1],
+  isNextTurn: true,
+});
 
-const setSecondPlayer = (state, action) => {
-  return updateObject(state, {
-    player: players[1],
-    opponent: players[0],
-    isNextTurn: false,
-  });
-};
+const setSecondPlayer = (state) => updateObject(state, {
+  player: players[1],
+  opponent: players[0],
+  isNextTurn: false,
+});
 
-const getAvailableMoves = (state, action) => {
-  return updateObject(state, {
-    availableMoves: action.availableMoves,
-  });
-};
+const getAvailableMoves = (state, action) => updateObject(state, {
+  availableMoves: action.availableMoves,
+});
 
 const gameOver = (state) => {
   const diff = state.playerOwnedSquares.length - state.opponentOwnedSquares.length;
@@ -66,67 +56,51 @@ const gameOver = (state) => {
   });
 };
 
-const makeMove = (state, action) => {
-  return updateObject(state, {
-    playerMadeMoves: [...state.playerMadeMoves, action.coords]
-  });
-};
+const makeMove = (state, action) => updateObject(state, {
+  playerMadeMoves: [...state.playerMadeMoves, action.coords],
+});
 
-const getOpponentMove = (state, action) => {
-  return updateObject(state, {
-    opponentMadeMoves: [...state.opponentMadeMoves, action.coords],
-  });
-};
+const getOpponentMove = (state, action) => updateObject(state, {
+  opponentMadeMoves: [...state.opponentMadeMoves, action.coords],
+});
 
-const setNextTurn = (state, action) => {
-  return updateObject(state, {
-    isNextTurn: !state.isNextTurn
-  });
-};
+const setNextTurn = (state) => updateObject(state, {
+  isNextTurn: !state.isNextTurn,
+});
 
-const setPlayerOwnedSquare = (state, action) => {
-  return updateObject(state, {
-    playerOwnedSquares: [...state.playerOwnedSquares, ...action.playerOwnedSquares],
-  });
-};
+const setPlayerOwnedSquare = (state, action) => updateObject(state, {
+  playerOwnedSquares: [...state.playerOwnedSquares, ...action.playerOwnedSquares],
+});
 
-const setOpponentOwnedSquare = (state, action) => {
-  return updateObject(state, {
-    opponentOwnedSquares: [...state.opponentOwnedSquares, ...action.opponentOwnedSquares],
-  });
-};
+const setOpponentOwnedSquare = (state, action) => updateObject(state, {
+  opponentOwnedSquares: [...state.opponentOwnedSquares, ...action.opponentOwnedSquares],
+});
 
-const setOpponentConnection = (state, action) => {
-  return updateObject(state, {
-    isOpponnentConnected: action.isOpponnentConnected,
-  });
-};
+const setOpponentConnection = (state, action) => updateObject(state, {
+  isOpponnentConnected: action.isOpponnentConnected,
+});
 
-const setGameStatus = (state, action) => {
-  return updateObject(state, {
-    isGameReady: action.isGameReady,
-  });
-};
+const setGameStatus = (state, action) => updateObject(state, {
+  isGameReady: action.isGameReady,
+});
 
-const deleteGame = (state) => {
-  return updateObject(state, {
-    size: 3,
-    winner: null,
-    player: null,
-    opponent: null,
-    roomCode: null,
-    gameOver: false,
-    isNextTurn: true,
-    isGameReady: false,
-    opponentTurn: false,
-    isOpponnentConnected: false,
-    availableMoves: [],
-    playerMadeMoves: [],
-    opponentMadeMoves: [],
-    playerOwnedSquares: [],
-    opponentOwnedSquares: [],
-  });
-};
+const deleteGame = (state) => updateObject(state, {
+  size: 3,
+  winner: null,
+  player: null,
+  opponent: null,
+  roomCode: null,
+  gameOver: false,
+  isNextTurn: true,
+  isGameReady: false,
+  opponentTurn: false,
+  isOpponnentConnected: false,
+  availableMoves: [],
+  playerMadeMoves: [],
+  opponentMadeMoves: [],
+  playerOwnedSquares: [],
+  opponentOwnedSquares: [],
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

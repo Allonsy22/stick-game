@@ -1,55 +1,49 @@
 import * as actionTypes from './actionTypes';
-import Auth from "../../utils/Auth/auth";
+import Auth from '../../utils/Auth/auth';
 
-export const register = (email, password) => (dispatch) => {
-  return Auth.register(email, password).then(
-    (response) => {
-      dispatch({
-        type: actionTypes.REGISTER_SUCCESS,
-      });
-      return Promise.resolve(response);
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      dispatch({
-        type: actionTypes.REGISTER_FAIL,
-        message,
-      });
-      return Promise.reject();
-    }
-  );
-};
+export const register = (email, password) => (dispatch) => Auth.register(email, password).then(
+  (response) => {
+    dispatch({
+      type: actionTypes.REGISTER_SUCCESS,
+    });
+    return Promise.resolve(response);
+  },
+  (error) => {
+    const message = (error.response
+          && error.response.data
+          && error.response.data.message)
+        || error.message
+        || error.toString();
+    dispatch({
+      type: actionTypes.REGISTER_FAIL,
+      message,
+    });
+    return Promise.reject();
+  },
+);
 
-export const login = (email, password) => (dispatch) => {
-  return Auth.login(email, password).then(
-    (data) => {
-      dispatch({
-        type: actionTypes.LOGIN_SUCCESS,
-        userData: { user: data },
-      });
+export const login = (email, password) => (dispatch) => Auth.login(email, password).then(
+  (data) => {
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      userData: { user: data },
+    });
 
-      return Promise.resolve();
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      dispatch({
-        type: actionTypes.LOGIN_FAIL,
-        message,
-      });
-      return Promise.reject();
-    }
-  );
-};
+    return Promise.resolve();
+  },
+  (error) => {
+    const message = (error.response
+          && error.response.data
+          && error.response.data.message)
+        || error.message
+        || error.toString();
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+      message,
+    });
+    return Promise.reject();
+  },
+);
 
 export const logout = () => (dispatch) => {
   Auth.logout();
@@ -64,8 +58,6 @@ export const logout = () => (dispatch) => {
   });
 };
 
-export const cleareMessage = () => {
-  return {
-    type: actionTypes.CLEAR_MESSAGE,
-  };
-};
+export const cleareMessage = () => ({
+  type: actionTypes.CLEAR_MESSAGE,
+});

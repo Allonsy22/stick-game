@@ -6,29 +6,21 @@ const initialState = {
   isJoinGameDialog: false,
 };
 
-const showCreateGameDialog = (state) => {
-  return updateObject(state, {
-    isCreateGameDialog: true,
-  });
-};
+const showCreateGameDialog = (state) => updateObject(state, {
+  isCreateGameDialog: true,
+});
 
-const closeCreateGameDialog = (state) => {
-  return updateObject(state, {
-    isCreateGameDialog: false,
-  });
-};
+const closeCreateGameDialog = (state) => updateObject(state, {
+  isCreateGameDialog: false,
+});
 
-const showJoinGameDialog = (state) => {
-  return updateObject(state, {
-    isJoinGameDialog: true,
-  });
-};
+const showJoinGameDialog = (state) => updateObject(state, {
+  isJoinGameDialog: true,
+});
 
-const closeJoinGameDialog = (state) => {
-  return updateObject(state, {
-    isJoinGameDialog: false,
-  });
-};
+const closeJoinGameDialog = (state) => updateObject(state, {
+  isJoinGameDialog: false,
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

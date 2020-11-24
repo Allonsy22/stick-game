@@ -8,7 +8,7 @@ import './App.css';
 class App extends Component {
   componentWillUnmount() {
     localStorage.removeItem('persist:root');
-  };
+  }
 
   render() {
     return (
@@ -18,7 +18,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={StartPage} />
             <Route exact path="/auth" component={AuthPage} />
-            <Route path="/game/:room" component={GamePage}/>
+            <Route path="/game/:room" component={GamePage} />
           </Switch>
         </Router>
       </div>

@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import * as actions from '../../store/actions/index';
-import { Dialog } from '../../componets';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import * as actions from '../../store/actions/index';
+import { Dialog } from '../../componets';
 import './StartPage.css';
 
 class StartPage extends Component {
   render() {
     const { user: currentUser } = this.props;
-    if ( !currentUser ) {
-      return <Redirect to="/auth"/>
+    if (!currentUser) {
+      return <Redirect to="/auth" />;
     }
     const { showCreateGameDialog, showJoinGameDialog } = this.props;
     return (
@@ -35,25 +35,21 @@ class StartPage extends Component {
           </Button>
         </div>
       </Container>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    player: state.game.player,
-    user: state.auth.user,
-    isLoggedIn: state.auth.isLoggedIn,
-  };
-}
+const mapStateToProps = (state) => ({
+  player: state.game.player,
+  user: state.auth.user,
+  isLoggedIn: state.auth.isLoggedIn,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    createGame: (size) => dispatch(actions.createGame(size)),
-    joinGame: () => dispatch(actions.joinGame()),
-    showCreateGameDialog: () => dispatch(actions.showCreateGameDialog()),
-    showJoinGameDialog: () => dispatch(actions.showJoinGameDialog()),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  createGame: (size) => dispatch(actions.createGame(size)),
+  joinGame: () => dispatch(actions.joinGame()),
+  showCreateGameDialog: () => dispatch(actions.showCreateGameDialog()),
+  showJoinGameDialog: () => dispatch(actions.showJoinGameDialog()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartPage);

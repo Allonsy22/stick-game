@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import { Canvas } from '../../componets';
+import * as actions from '../../store/actions/index';
 
 class GamePage extends Component {
   onHomeButtonClick() {
@@ -17,16 +17,16 @@ class GamePage extends Component {
     setTimeout(() => {
       window.location.reload();
     }, 500);
-  };
+  }
 
   renderSpiner() {
     return (
       <Row className="justify-content-md-center">
-        <Spinner animation="border"></Spinner>
+        <Spinner animation="border" />
         <span>Waiting for opponent</span>
       </Row>
-    )
-  };
+    );
+  }
 
   renderAlert(showAlert, type, text) {
     return (
@@ -39,7 +39,7 @@ class GamePage extends Component {
         </Alert>
       </Container>
     );
-  };
+  }
 
   renderHomePageButton() {
     return (
@@ -47,7 +47,7 @@ class GamePage extends Component {
         Home
       </Button>
     );
-  };
+  }
 
   render() {
     const {
@@ -63,7 +63,7 @@ class GamePage extends Component {
     } = this.props;
 
     if (!currentUser || !isLoggedIn) {
-      return <Redirect to="/auth" />
+      return <Redirect to="/auth" />;
     }
 
     if (winner) {
@@ -80,37 +80,39 @@ class GamePage extends Component {
           <>
             <Canvas size={size} />
             <Row className="justify-content-md-center">
-              <p>Room code: <b>{roomCode}</b></p>
+              <p>
+                Room code:
+                <b>{roomCode}</b>
+              </p>
             </Row>
             <Row className="justify-content-md-center">
-              <p>Player: {player}</p>
+              <p>
+                Player:
+                {player}
+              </p>
             </Row>
           </>
         )}
       </Container>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    player: state.game.player,
-    size: state.game.size,
-    winner: state.game.winner,
-    isGameReady: state.game.isGameReady,
-    isOpponnentConnected: state.game.isOpponnentConnected,
-    roomCode: state.game.roomCode,
-    user: state.auth.user,
-    isLoggedIn: state.auth.isLoggedIn,
-  };
-}
+const mapStateToProps = (state) => ({
+  player: state.game.player,
+  size: state.game.size,
+  winner: state.game.winner,
+  isGameReady: state.game.isGameReady,
+  isOpponnentConnected: state.game.isOpponnentConnected,
+  roomCode: state.game.roomCode,
+  user: state.auth.user,
+  isLoggedIn: state.auth.isLoggedIn,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    deleteGame: () => dispatch(actions.deleteGame()),
-    updatePlayerStatistics: 
+const mapDispatchToProps = (dispatch) => ({
+  deleteGame: () => dispatch(actions.deleteGame()),
+  updatePlayerStatistics:
       (winner, currentPlayer) => dispatch(actions.updatePlayerStatistics(winner, currentPlayer)),
-  }
-}
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GamePage));

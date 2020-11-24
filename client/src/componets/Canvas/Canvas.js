@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import { isCoordsInArray } from '../../utils/utils';
@@ -10,25 +9,25 @@ class Canvas extends Component {
   makeMove(props) {
     const { i, j } = props;
     const isCoords = isCoordsInArray({
-      coords: {i, j},
-      array: this.props.availableMoves
+      coords: { i, j },
+      array: [...this.props.availableMoves],
     });
-    if (isCoords && this.props.isNextTurn) this.props.makeMove({i, j});
+    if (isCoords && this.props.isNextTurn) this.props.makeMove({ i, j });
   }
 
   renderPoint(i, j) {
-    return <div className="Point" i={i} j={j} key={i+j}></div>;
+    return <div className="Point" i={i} j={j} key={i + j} />;
   }
 
   getLineOwner(i, j) {
     let owner;
     const isPlayerCoords = isCoordsInArray({
-      coords: {i, j}, 
-      array: this.props.playerMadeMoves,
+      coords: { i, j },
+      array: [...this.props.playerMadeMoves],
     });
     const isOpponentCoords = isCoordsInArray({
-      coords: {i, j}, 
-      array: this.props.opponentMadeMoves,
+      coords: { i, j },
+      array: [...this.props.opponentMadeMoves],
     });
     if (isPlayerCoords) owner = this.props.player;
     if (isOpponentCoords) owner = this.props.opponent;
@@ -37,32 +36,36 @@ class Canvas extends Component {
 
   renderHorizontalLine(i, j) {
     const owner = this.getLineOwner(i, j);
-    const props = {i, j, owner, type: 'Horizontal'};
-    return <Line {...props} key={i + j}/>
+    const props = {
+      i, j, owner, type: 'Horizontal',
+    };
+    return <Line {...props} key={i + j} />;
   }
 
   renderVerticalLine(i, j) {
     const owner = this.getLineOwner(i, j);
-    const props = {i, j, owner, type: 'Vertical'};
-    return <Line {...props} key={i + j} />
+    const props = {
+      i, j, owner, type: 'Vertical',
+    };
+    return <Line {...props} key={i + j} />;
   }
 
   renderSquare(i, j) {
     let owner;
     const isPlayerOwner = isCoordsInArray({
-      coords: {i, j}, 
-      array: this.props.playerOwnedSquares,
+      coords: { i, j },
+      array: [...this.props.playerOwnedSquares],
     });
     const isOpponentOwner = isCoordsInArray({
-      coords: {i, j}, 
-      array: this.props.opponentOwnedSquares,
+      coords: { i, j },
+      array: [...this.props.opponentOwnedSquares],
     });
 
     if (isPlayerOwner) owner = this.props.player;
     if (isOpponentOwner) owner = this.props.opponent;
 
     const className = `Square ${owner}`;
-    return <div className={className} i={i} j={j} key={i+j}></div>;
+    return <div className={className} i={i} j={j} key={i + j} />;
   }
 
   renderColumn(i, j) {
@@ -91,29 +94,24 @@ class Canvas extends Component {
       <div className="Canvas">
         {this.renderField()}
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    size: state.game.size,
-    player: state.game.player,
-    opponent: state.game.opponent,
-    isNextTurn: state.game.isNextTurn,
-    availableMoves: state.game.availableMoves,
-    playerMadeMoves: state.game.playerMadeMoves,
-    opponentMadeMoves: state.game.opponentMadeMoves,
-    playerOwnedSquares: state.game.playerOwnedSquares,
-    opponentOwnedSquares: state.game.opponentOwnedSquares,
-  };
-};
+const mapStateToProps = (state) => ({
+  size: state.game.size,
+  player: state.game.player,
+  opponent: state.game.opponent,
+  isNextTurn: state.game.isNextTurn,
+  availableMoves: state.game.availableMoves,
+  playerMadeMoves: state.game.playerMadeMoves,
+  opponentMadeMoves: state.game.opponentMadeMoves,
+  playerOwnedSquares: state.game.playerOwnedSquares,
+  opponentOwnedSquares: state.game.opponentOwnedSquares,
+});
 
-
-const mapDispatchToProps = dispatch => {
-  return {
-    makeMove: (coords) => dispatch(actions.makeMove(coords)),
-  }
-};
+const mapDispatchToProps = (dispatch) => ({
+  makeMove: (coords) => dispatch(actions.makeMove(coords)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

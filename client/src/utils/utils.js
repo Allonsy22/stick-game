@@ -1,15 +1,13 @@
-export const updateObject = (oldObject, updatedProperties) => {
-  return {
-      ...oldObject,
-      ...updatedProperties
-  };
-}; 
+export const updateObject = (oldObject, updatedProperties) => ({
+  ...oldObject,
+  ...updatedProperties,
+});
 
 export const isCoordsInArray = (props) => {
   // array like [{i, j}, {i, j}...]
   const { coords, array } = props;
   let isCoords = false;
-  array.forEach( obj => {
+  array.forEach((obj) => {
     if (obj.i === coords.i && obj.j === coords.j) {
       isCoords = true;
     }

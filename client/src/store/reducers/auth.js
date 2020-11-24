@@ -8,46 +8,30 @@ const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
-const registerSuccess = (state) => {
-  return updateObject(state, {
-    isLoggedIn: false,
-  });
-};
+const registerSuccess = (state) => updateObject(state, {
+  isLoggedIn: false,
+});
 
-const registerFail = (state, action) => {
-  return updateObject(state, {
-    isLoggedIn: false,
-    message: action.message
-  });
-};
+const registerFail = (state, action) => updateObject(state, {
+  isLoggedIn: false,
+  message: action.message,
+});
 
-const loginSuccess = (state, action) => {
-  return updateObject(state, {
-    isLoggedIn: true,
-    user: action.userData,
-  });
-};
+const loginSuccess = (state, action) => updateObject(state, {
+  isLoggedIn: true,
+  user: action.userData,
+});
 
-const loginFail = (state, action) => {
-  return updateObject(state, {
-    isLoggedIn: false,
-    user: null,
-    message: action.message
-  });
-};
+const loginFail = (state, action) => updateObject(state, {
+  isLoggedIn: false,
+  user: null,
+  message: action.message,
+});
 
-const logout = (state) => {
-  return updateObject(state, {
-    isLoggedIn: false,
-    user: null,
-  });
-};
-
-const clearMessage = (state) => {
-  return updateObject(state, {
-    message: '',
-  });
-};
+const logout = (state) => updateObject(state, {
+  isLoggedIn: false,
+  user: null,
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

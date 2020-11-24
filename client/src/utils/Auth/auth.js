@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 import API_URL from '../api_url';
 
 class Auth {
   login(email, password) {
     return axios
-      .post(API_URL + 'auth/signin', { email, password })
+      .post(`${API_URL}auth/signin`, { email, password })
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem('user', JSON.stringify(response.data));
@@ -18,7 +18,7 @@ class Auth {
   }
 
   register(email, password) {
-    return axios.post(API_URL + 'auth/signup', {
+    return axios.post(`${API_URL}auth/signup`, {
       email,
       password,
     });
