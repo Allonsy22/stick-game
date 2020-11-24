@@ -11,9 +11,12 @@ import Button from 'react-bootstrap/Button';
 
 class GamePage extends Component {
   onHomeButtonClick() {
-    const { deleteGame } = this.props;
+    const { deleteGame, history } = this.props;
     deleteGame();
-    this.props.history.push('/');
+    history.push('/');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   renderSpiner() {

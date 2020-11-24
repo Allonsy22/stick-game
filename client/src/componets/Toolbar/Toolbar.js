@@ -18,6 +18,9 @@ class Toolbar extends Component {
     const { deleteGame, history } = this.props;
     deleteGame();
     history.push('/');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   onStatisticsButtonClick() {

@@ -60,6 +60,7 @@ function connectToNamespace(nsp, socket, game, roomCode) {
   });
   socket.on('disconnect', () => {
     nsp.emit('opponent-disconected');
+    roomUtils.deleteRoom(roomCode);
     console.log('user disconnected', roomCode);
   });
 }

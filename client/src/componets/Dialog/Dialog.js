@@ -35,17 +35,19 @@ class Dialog extends Component {
   };
 
   onSubmitCreateGame() {
-    const { size, createGame, roomCode, history } = this.props;
+    const { size, createGame, roomCode, history, closeCreateGameDialog } = this.props;
     createGame(size, roomCode);
     this.setShowAlert(false);
     history.push(`/game/${roomCode}`);
+    closeCreateGameDialog();
   };
 
   onSubmitJoinGame() {
-    const { joinGame, roomCode, history } = this.props;
+    const { joinGame, roomCode, history, closeJoinGameDialog } = this.props;
     joinGame(roomCode);
     this.setShowAlert(false);
     history.push(`/game/${roomCode}`);
+    closeJoinGameDialog();
   };
 
   renderCreateDialog() {
