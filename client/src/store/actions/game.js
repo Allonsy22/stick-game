@@ -199,4 +199,4 @@ export const deleteGame = () => {
     return {
         type: actionTypes.DELETE_GAME,
     };
-}; 
+};

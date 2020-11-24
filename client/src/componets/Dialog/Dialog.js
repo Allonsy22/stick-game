@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -10,7 +10,6 @@ import * as actions from '../../store/actions/index';
 class Dialog extends Component {
   state = {
     roomValue: '',
-    isGame: false,
     showAlert: false,
   };
 
@@ -36,18 +35,18 @@ class Dialog extends Component {
   };
 
   onSubmitCreateGame() {
-    const { size, createGame, roomCode } = this.props;
+    const { size, createGame, roomCode, history } = this.props;
     createGame(size, roomCode);
-    this.setState({ isGame: true });
     this.setShowAlert(false);
-  }
+    history.push(`/game/${roomCode}`);
+  };
 
   onSubmitJoinGame() {
-    const { joinGame, roomCode } = this.props;
+    const { joinGame, roomCode, history } = this.props;
     joinGame(roomCode);
-    this.setState({ isGame: true });
     this.setShowAlert(false);
-  }
+    history.push(`/game/${roomCode}`);
+  };
 
   renderCreateDialog() {
     const { isCreateGameDialog, closeCreateGameDialog, roomCode } = this.props;
@@ -114,11 +113,6 @@ class Dialog extends Component {
   }
 
   render() {
-    const { isGame } = this.state;
-    const { roomCode } = this.props;
-    if (isGame) {
-      return <Redirect to={`/game/${roomCode}`} />
-    }
     return (
       <>
         {this.renderCreateDialog()}
@@ -149,4 +143,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dialog);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dialog));

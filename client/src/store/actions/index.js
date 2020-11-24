@@ -21,3 +21,8 @@ export {
   register,
   cleareMessage,
 } from './auth';
+
+export { 
+  updatePlayerStatistics,
+  getPlayerStatistics,
+} from './statistics';

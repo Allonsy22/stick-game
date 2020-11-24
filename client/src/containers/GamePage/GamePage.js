@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,38 +13,36 @@ class GamePage extends Component {
   onHomeButtonClick() {
     const { deleteGame } = this.props;
     deleteGame();
-    window.location.reload();
+    this.props.history.push('/');
   };
 
   renderSpiner() {
     return (
-      <Row>
+      <Row className="justify-content-md-center">
         <Spinner animation="border"></Spinner>
         <span>Waiting for opponent</span>
       </Row>
     )
   };
 
-  renderWarningAlert(showAlert, warning) {
+  renderAlert(showAlert, type, text) {
     return (
       <Container className="mt-3">
-        <Alert show={showAlert} variant="warning">
-          <Alert.Heading>{warning}</Alert.Heading>
+        <Alert show={showAlert} variant={type}>
+          <Alert.Heading>{text}</Alert.Heading>
           <div className="d-flex justify-content-end">
-            {this.renderHomePage()}
+            {this.renderHomePageButton()}
           </div>
         </Alert>
       </Container>
     );
   };
 
-  renderHomePage() {
+  renderHomePageButton() {
     return (
-      <Link to={"/"} className="nav-link">
-        <Button onClick={() => this.onHomeButtonClick()} variant="outline-success">
-          Home!
-        </Button>
-      </Link>
+      <Button onClick={() => this.onHomeButtonClick()} variant="outline-success">
+        Home
+      </Button>
     );
   };
 
@@ -58,21 +56,24 @@ class GamePage extends Component {
       isLoggedIn,
       isGameReady,
       isOpponnentConnected: connected,
+      updatePlayerStatistics,
     } = this.props;
 
-    const invalidGame = !roomCode && !connected && !isGameReady;
-    if (!currentUser || !isLoggedIn || invalidGame) {
+    if (!currentUser || !isLoggedIn) {
       return <Redirect to="/auth" />
+    }
+
+    if (winner) {
+      updatePlayerStatistics(winner, player);
     }
 
     return (
       <Container className="mt-3">
-        {this.renderHomePage()}
-        {!roomCode && this.renderWarningAlert(!roomCode, "This room doesn't exist or unavailable")}
-        {!connected && isGameReady && this.renderWarningAlert(!connected, 'Opponent lost connection')}
-        <Row className="justify-content-md-center">
-          {!isGameReady && this.renderSpiner()}
-        </Row>
+        {this.renderHomePageButton()}
+        {!roomCode && this.renderAlert(!roomCode, 'warning', 'This room doesn\'t exist or unavailable')}
+        {!connected && isGameReady && this.renderAlert(!connected, 'warning', 'Opponent lost connection')}
+        {winner && this.renderAlert(true, 'success', `Winner is ${winner}`)}
+        {!isGameReady && this.renderSpiner()}
         {connected && isGameReady && (
           <>
             <Canvas size={size} />
@@ -81,9 +82,6 @@ class GamePage extends Component {
             </Row>
             <Row className="justify-content-md-center">
               <p>Player: {player}</p>
-            </Row>
-            <Row className="justify-content-md-center">
-              {winner ? <p>Winner: {winner} </p> : null}
             </Row>
           </>
         )}
@@ -108,7 +106,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     deleteGame: () => dispatch(actions.deleteGame()),
+    updatePlayerStatistics: 
+      (winner, currentPlayer) => dispatch(actions.updatePlayerStatistics(winner, currentPlayer)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GamePage));

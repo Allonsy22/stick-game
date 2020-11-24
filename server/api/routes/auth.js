@@ -21,10 +21,12 @@ router.post(
   auth.signup
 );
 
-router.post("/signin", auth.signin);
+router.post('/signin', auth.signin);
 
 router.get('/', auth.getAll);
 
 router.post('/update', auth.updateStatistics);
+
+router.post('/statistics', auth.getStatistics);
 
 module.exports = router;

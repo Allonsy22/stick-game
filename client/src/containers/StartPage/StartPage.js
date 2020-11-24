@@ -8,9 +8,8 @@ import Button from 'react-bootstrap/Button';
 import './StartPage.css';
 
 class StartPage extends Component {
-
   render() {
-    const { user: currentUser, logout } = this.props;
+    const { user: currentUser } = this.props;
     if ( !currentUser ) {
       return <Redirect to="/auth"/>
     }
@@ -18,22 +17,22 @@ class StartPage extends Component {
     return (
       <Container className="StartPage-container">
         <h4>Welcome to the game Dots and Boxes</h4>
-        <Button 
-          className="StartPage-logout" 
-          onClick={() => logout()}
-        >Log Out</Button>
         <Dialog />
         <div display="flex">
           <Button
             variant="primary"
             className="StartPage-button"
             onClick={() => showCreateGameDialog()}
-          >Create Game</Button>
+          >
+            Create Game
+          </Button>
           <Button
             variant="primary"
             className="StartPage-button"
             onClick={() => showJoinGameDialog()}
-          >Join Game</Button>
+          >
+            Join Game
+          </Button>
         </div>
       </Container>
     )
@@ -43,8 +42,6 @@ class StartPage extends Component {
 const mapStateToProps = state => {
   return {
     player: state.game.player,
-    size: state.game.size,
-    winner: state.game.winner,
     user: state.auth.user,
     isLoggedIn: state.auth.isLoggedIn,
   };
@@ -56,7 +53,6 @@ const mapDispatchToProps = dispatch => {
     joinGame: () => dispatch(actions.joinGame()),
     showCreateGameDialog: () => dispatch(actions.showCreateGameDialog()),
     showJoinGameDialog: () => dispatch(actions.showJoinGameDialog()),
-    logout: () => dispatch(actions.logout()),
   }
 }
 

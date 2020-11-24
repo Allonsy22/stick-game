@@ -57,6 +57,11 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: actionTypes.LOGOUT,
   });
+
+  dispatch({
+    type: actionTypes.GET_PLAYER_STATISTICS,
+    statistics: null,
+  });
 };
 
 export const cleareMessage = () => {

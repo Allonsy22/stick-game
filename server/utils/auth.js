@@ -72,10 +72,9 @@ const getAll = (req, res) => {
 };
 
 const updateStatistics = (req, res) => {
-  User.findOne(
-    {
-      where: { email: req.body.email },
-    })
+  User.findOne({
+    where: { email: req.body.email },
+  })
     .then(user => {
       let { totalGames, winning } = user;
       const newWinRate = getWinRate({ type: req.body.type, winning, totalGames });
@@ -84,13 +83,26 @@ const updateStatistics = (req, res) => {
         winRate: newWinRate,
         winning: req.body.type === 'win' ? winning + 1 : winning,
       })
-        .then(response => {
-          res.status(200).json(response);
+        .then(() => {
+          res.status(200).send({ message: 'Statistics updated' });
         });
     })
     .catch(error => {
       res.status(500).json(error);
     });
+};
+
+const getStatistics = (req, res) => {
+  User.findOne({
+    where: { email: req.body.email },
+  })
+    .then(user => {
+      const { totalGames, winning, winRate } = user;
+      res.status(200).json({totalGames, winning, winRate});
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    })
 };
 
 const getWinRate = (props) => {
@@ -106,4 +118,5 @@ module.exports = {
   signin,
   getAll,
   updateStatistics,
+  getStatistics,
 };

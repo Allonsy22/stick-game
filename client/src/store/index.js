@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import gameReducer from './reducers/game';
 import dialogReducer from './reducers/dialog';
 import authReducer from './reducers/auth';
+import statisticsReducer from './reducers/statistics';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   game: gameReducer,
   dialog: dialogReducer,
   auth: authReducer,
+  stats: statisticsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
