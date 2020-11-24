@@ -16,7 +16,7 @@ router.post(
   "/signup",
   [
     verifySignUp.checkDuplicateEmail,
-    verifySignUp.checkForEmailValidation,
+    //verifySignUp.checkForEmailValidation,
   ],
   auth.signup
 );
@@ -24,5 +24,7 @@ router.post(
 router.post("/signin", auth.signin);
 
 router.get('/', auth.getAll);
+
+router.post('/update', auth.updateStatistics);
 
 module.exports = router;

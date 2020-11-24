@@ -5,7 +5,16 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
-    }
+    },
+    totalGames: {
+      type: Sequelize.INTEGER,
+    },
+    winning: {
+      type: Sequelize.INTEGER,
+    },
+    winRate: {
+      type: Sequelize.DECIMAL,
+    },
   });
 
   // User.sync({ force: true });

@@ -4,11 +4,15 @@ const User = db.user;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { response } = require('express');
 
 const signup = (req, res) => {
   User.create({
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    totalGames: 0,
+    winning: 0,
+    winRate: 0,
   })
     .then(() => {
       res.send({ message: 'User was registered successfully!' });
@@ -67,8 +71,39 @@ const getAll = (req, res) => {
     });
 };
 
+const updateStatistics = (req, res) => {
+  User.findOne(
+    {
+      where: { email: req.body.email },
+    })
+    .then(user => {
+      let { totalGames, winning } = user;
+      const newWinRate = getWinRate({ type: req.body.type, winning, totalGames });
+      user.update({
+        totalGames: db.sequelize.literal('"totalGames" + 1'),
+        winRate: newWinRate,
+        winning: req.body.type === 'win' ? winning + 1 : winning,
+      })
+        .then(response => {
+          res.status(200).json(response);
+        });
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+};
+
+const getWinRate = (props) => {
+  let { type, winning, totalGames } = props;
+  if (type === 'win') {
+    return Math.round(((winning + 1) * 100) / (totalGames + 1));
+  }
+  return Math.round((winning * 100) / (totalGames + 1));
+};
+
 module.exports = {
   signup,
   signin,
   getAll,
+  updateStatistics,
 };
