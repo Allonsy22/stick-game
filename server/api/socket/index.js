@@ -8,7 +8,7 @@ module.exports = {
     const io = socket(server, props);
 
     io.sockets.on('connection', (socket) => {
-      console.log('the user connected');
+      console.log('a user connected');
     });
 
     const workspaces = io.of(/^\/\w+$/);
@@ -16,6 +16,7 @@ module.exports = {
       const workspace = socket.nsp;
       const type = socket.handshake.query['type'];
       const roomCode = socket.handshake.query['room'];
+      
       console.log(`socket ${type} connected to room ${roomCode}`);
 
       let game;
@@ -37,13 +38,12 @@ module.exports = {
           workspace.emit('game-is-ready');
         }
       }
-      console.log(io);
-      connectToNamespace(workspace, socket, game);
+      connectToNamespace(workspace, socket, game, roomCode);
     });
   }
 };
 
-function connectToNamespace(nsp, socket, game) {
+function connectToNamespace(nsp, socket, game, roomCode) {
   socket.on('make-move', (coords) => {
     const response = game.makeMove(coords);
     if (response.isNextTurn === true) {
@@ -60,6 +60,6 @@ function connectToNamespace(nsp, socket, game) {
   });
   socket.on('disconnect', () => {
     nsp.emit('opponent-disconected');
-    console.log('user disconnected');
+    console.log('user disconnected', roomCode);
   });
 }

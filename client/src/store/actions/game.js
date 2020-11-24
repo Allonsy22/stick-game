@@ -196,7 +196,6 @@ export const gameOver = () => {
 };
 
 export const deleteGame = () => {
-    socket.disconnect();
     return {
         type: actionTypes.DELETE_GAME,
     };

@@ -10,6 +10,12 @@ import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
 class GamePage extends Component {
+  onHomeButtonClick() {
+    const { deleteGame } = this.props;
+    deleteGame();
+    window.location.reload();
+  };
+
   renderSpiner() {
     return (
       <Row>
@@ -33,12 +39,11 @@ class GamePage extends Component {
   };
 
   renderHomePage() {
-    const { deleteGame } = this.props;
     return (
       <Link to={"/"} className="nav-link">
-        <Button onClick={() => { deleteGame() }} variant="outline-success">
+        <Button onClick={() => this.onHomeButtonClick()} variant="outline-success">
           Home!
-      </Button>
+        </Button>
       </Link>
     );
   };
@@ -55,7 +60,8 @@ class GamePage extends Component {
       isOpponnentConnected: connected,
     } = this.props;
 
-    if (!currentUser || !isLoggedIn) {
+    const invalidGame = !roomCode && !connected && !isGameReady;
+    if (!currentUser || !isLoggedIn || invalidGame) {
       return <Redirect to="/auth" />
     }
 
