@@ -11,8 +11,9 @@ const initialState = {
   roomCode: null,
   gameOver: false,
   isNextTurn: true,
+  isGameReady: false,
   opponentTurn: false,
-  isOpponentReady: false,
+  isOpponnentConnected: false,
   availableMoves: [],
   playerMadeMoves: [],
   opponentMadeMoves: [],
@@ -95,6 +96,38 @@ const setOpponentOwnedSquare = (state, action) => {
   });
 };
 
+const setOpponentConnection = (state, action) => {
+  return updateObject(state, {
+    isOpponnentConnected: action.isOpponnentConnected,
+  });
+};
+
+const setGameStatus = (state, action) => {
+  return updateObject(state, {
+    isGameReady: action.isGameReady,
+  });
+};
+
+const deleteGame = (state) => {
+  return updateObject(state, {
+    size: 3,
+    winner: null,
+    player: null,
+    opponent: null,
+    roomCode: null,
+    gameOver: false,
+    isNextTurn: true,
+    isGameReady: false,
+    opponentTurn: false,
+    isOpponnentConnected: false,
+    availableMoves: [],
+    playerMadeMoves: [],
+    opponentMadeMoves: [],
+    playerOwnedSquares: [],
+    opponentOwnedSquares: [],
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_ROOM_CODE: return setRoomCode(state, action);
@@ -108,6 +141,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_NEXT_TURN: return setNextTurn(state, action);
     case actionTypes.SET_PLAYER_OWNED_SQUARE: return setPlayerOwnedSquare(state, action);
     case actionTypes.SET_OPPONENT_OWNED_SQUARE: return setOpponentOwnedSquare(state, action);
+    case actionTypes.SET_OPPONNENT_CONNECTION: return setOpponentConnection(state, action);
+    case actionTypes.SET_GAME_STATUS: return setGameStatus(state, action);
+    case actionTypes.DELETE_GAME: return deleteGame(state);
     default: return state;
   }
 };

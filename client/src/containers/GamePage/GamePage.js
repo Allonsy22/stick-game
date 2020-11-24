@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Canvas } from '../../componets';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,18 +19,27 @@ class GamePage extends Component {
     )
   };
 
-  renderWarningAlert(showAlert) {
+  renderWarningAlert(showAlert, warning) {
     return (
       <Container className="mt-3">
         <Alert show={showAlert} variant="warning">
-          <Alert.Heading>This room doesn't exist or unavailable</Alert.Heading>
+          <Alert.Heading>{warning}</Alert.Heading>
           <div className="d-flex justify-content-end">
-            <Button onClick={() => {}} variant="outline-success">
-              OK!
-            </Button>
+            {this.renderHomePage()}
           </div>
         </Alert>
       </Container>
+    );
+  };
+
+  renderHomePage() {
+    const { deleteGame } = this.props;
+    return (
+      <Link to={"/"} className="nav-link">
+        <Button onClick={() => { deleteGame() }} variant="outline-success">
+          Home!
+      </Button>
+      </Link>
     );
   };
 
@@ -41,7 +51,8 @@ class GamePage extends Component {
       roomCode,
       user: currentUser,
       isLoggedIn,
-      isOpponentReady,
+      isGameReady,
+      isOpponnentConnected: connected,
     } = this.props;
 
     if (!currentUser || !isLoggedIn) {
@@ -50,22 +61,26 @@ class GamePage extends Component {
 
     return (
       <Container className="mt-3">
-        {!roomCode && this.renderWarningAlert(!roomCode)}
-        {/* <Row className="justify-content-md-center">
-          {isOpponentReady 
-            ? <Canvas size={size} />
-            :  this.renderSpiner()}
-        </Row> */}
-        <Canvas size={size} />
+        {this.renderHomePage()}
+        {!roomCode && this.renderWarningAlert(!roomCode, "This room doesn't exist or unavailable")}
+        {!connected && isGameReady && this.renderWarningAlert(!connected, 'Opponent lost connection')}
         <Row className="justify-content-md-center">
-          <p>Room code: <b>{roomCode}</b></p>
+          {!isGameReady && this.renderSpiner()}
         </Row>
-        <Row className="justify-content-md-center">
-          <p>Player: {player}</p>
-        </Row>
-        <Row className="justify-content-md-center">
-          {winner ? <p>Winner: {winner} </p> : null}
-        </Row>
+        {connected && isGameReady && (
+          <>
+            <Canvas size={size} />
+            <Row className="justify-content-md-center">
+              <p>Room code: <b>{roomCode}</b></p>
+            </Row>
+            <Row className="justify-content-md-center">
+              <p>Player: {player}</p>
+            </Row>
+            <Row className="justify-content-md-center">
+              {winner ? <p>Winner: {winner} </p> : null}
+            </Row>
+          </>
+        )}
       </Container>
     )
   }
@@ -76,11 +91,18 @@ const mapStateToProps = state => {
     player: state.game.player,
     size: state.game.size,
     winner: state.game.winner,
-    isOpponentReady: state.game.isOpponentReady,
+    isGameReady: state.game.isGameReady,
+    isOpponnentConnected: state.game.isOpponnentConnected,
     roomCode: state.game.roomCode,
     user: state.auth.user,
     isLoggedIn: state.auth.isLoggedIn,
   };
 }
 
-export default connect(mapStateToProps, null)(GamePage);
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteGame: () => dispatch(actions.deleteGame()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

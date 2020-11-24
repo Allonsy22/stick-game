@@ -5,6 +5,7 @@ export {
   setGameSize,
   getRoomCode,
   setRoomCode,
+  deleteGame,
 } from './game';
 
 export {

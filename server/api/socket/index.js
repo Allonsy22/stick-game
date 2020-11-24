@@ -34,8 +34,10 @@ module.exports = {
           socket.on('join-game', () => {
             socket.emit('get-game-size', game.getSize());
           });
+          workspace.emit('game-is-ready');
         }
       }
+      console.log(io);
       connectToNamespace(workspace, socket, game);
     });
   }
@@ -57,6 +59,7 @@ function connectToNamespace(nsp, socket, game) {
     }
   });
   socket.on('disconnect', () => {
+    nsp.emit('opponent-disconected');
     console.log('user disconnected');
   });
 }

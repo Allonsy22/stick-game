@@ -9,6 +9,17 @@ export const createGame = (size, roomCode) => {
     socket.connect(roomCode, 'create');
     socket.emit('create-game', size);
     return dispatch => {
+        socket.on('game-is-ready', () => {
+            dispatch({
+                type: actionTypes.SET_GAME_STATUS,
+                isGameReady: true,
+            });
+            dispatch({
+                type: actionTypes.SET_OPPONNENT_CONNECTION,
+                isOpponnentConnected: true,
+            });
+        });
+
         socket.on('get-available-moves', (data) => {
             dispatch(getAvailableMoves(data));
         });
@@ -33,6 +44,13 @@ export const createGame = (size, roomCode) => {
             dispatch(gameOver());
         });
 
+        socket.on('opponent-disconected', () => {
+            dispatch({
+                type: actionTypes.SET_OPPONNENT_CONNECTION,
+                isOpponnentConnected: false,
+            });
+        });
+
         dispatch(setFirstPlayer());
     };
 };
@@ -41,6 +59,17 @@ export const joinGame = (roomCode) => {
     socket.connect(roomCode, 'join');
     socket.emit('join-game');
     return dispatch => {
+        socket.on('game-is-ready', () => {
+            dispatch({
+                type: actionTypes.SET_GAME_STATUS,
+                isGameReady: true,
+            });
+            dispatch({
+                type: actionTypes.SET_OPPONNENT_CONNECTION,
+                isOpponnentConnected: true,
+            });
+        });
+
         socket.on('get-game-size', size => {
             dispatch(setGameSize(size));
         });
@@ -67,6 +96,13 @@ export const joinGame = (roomCode) => {
 
         socket.on('game-over', () => {
             dispatch(gameOver());
+        });
+
+        socket.on('opponent-disconected', () => {
+            dispatch({
+                type: actionTypes.SET_OPPONNENT_CONNECTION,
+                isOpponnentConnected: false,
+            });
         });
 
         dispatch(setSecondPlayer());
@@ -158,3 +194,10 @@ export const gameOver = () => {
         type: actionTypes.GAME_OVER,
     };
 };
+
+export const deleteGame = () => {
+    socket.disconnect();
+    return {
+        type: actionTypes.DELETE_GAME,
+    };
+}; 
