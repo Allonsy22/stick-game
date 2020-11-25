@@ -64,8 +64,8 @@ class Canvas extends Component {
     if (isPlayerOwner) owner = this.props.player;
     if (isOpponentOwner) owner = this.props.opponent;
 
-    const className = `Square ${owner}`;
-    return <div className={className} i={i} j={j} key={i + j} />;
+    const className = `Square ${owner}-text`;
+    return <div className={className} i={i} j={j} key={i + j}>{owner}</div>;
   }
 
   renderColumn(i, j) {

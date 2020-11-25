@@ -65,13 +65,13 @@ class Toolbar extends Component {
   };
 
   render() {
-    const { user, statistics } = this.props;
+    const { user, statistics, isLoggedIn } = this.props;
     return (
       <Container className="mt-4 Toolbar-container">
         {statistics && this.renderStatisticsDialog()}
         <Row className="justify-content-between">
           <Button className="ml-2" onClick={() => this.onHomeButtonClick()}>Home</Button>
-          {user && this.renderButtonGroup()}
+          {user && isLoggedIn && this.renderButtonGroup()}
         </Row>
       </Container>
     );
@@ -81,6 +81,7 @@ class Toolbar extends Component {
 const mapStateToProps = state => {
   return {
     user: state.auth.user,
+    isLoggedIn: state.auth.isLoggedIn,
     statistics: state.stats.statistics,
   };
 }

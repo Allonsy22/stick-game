@@ -75,7 +75,7 @@ class GamePage extends Component {
         {!roomCode && this.renderAlert(!roomCode, 'warning', 'This room doesn\'t exist or unavailable')}
         {!connected && isGameReady && this.renderAlert(!connected, 'warning', 'Opponent lost connection')}
         {winner && this.renderAlert(true, 'success', `Winner is ${winner}`)}
-        {!isGameReady && this.renderSpiner()}
+        {!isGameReady && roomCode && this.renderSpiner()}
         {connected && isGameReady && (
           <>
             <Canvas size={size} />

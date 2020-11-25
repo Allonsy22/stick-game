@@ -28,6 +28,7 @@
 .Square {
   width: 30px;
   height: 25px;
+  text-align: center;
 }
 
 .Horizontal:hover {
@@ -44,4 +45,12 @@
 
 .Blue {
   background-color: rgb(0, 0, 255);
+}
+
+.Blue-text {
+  color: rgb(0, 0, 255);
+}
+
+.Red-text {
+  color: rgb(255, 0, 0);
 }
