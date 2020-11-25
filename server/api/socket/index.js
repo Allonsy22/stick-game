@@ -38,12 +38,12 @@ module.exports = {
           workspace.emit('game-is-ready');
         }
       }
-      connectToNamespace(workspace, socket, game, roomCode);
+      setNamespaceLogic(workspace, socket, game, roomCode);
     });
   }
 };
 
-function connectToNamespace(nsp, socket, game, roomCode) {
+function setNamespaceLogic(nsp, socket, game, roomCode) {
   socket.on('make-move', (coords) => {
     const response = game.makeMove(coords);
     if (response.isNextTurn === true) {
