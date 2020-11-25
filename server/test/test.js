@@ -2,11 +2,13 @@ const assert = require('assert');
 const Game = require('../game/Game');
 
 const game = new Game();
-game.newGame(3);
+game.newGame({size: 3});
+
 
 describe("game logic test for game 3x3", function () {
   it("should return 12 available moves when game started", function () {
     const availableMoves = game.getAvailableMoves();
+    console.log(availableMoves);
     assert.equal(availableMoves.length, 12);
   });
 });
@@ -34,7 +36,7 @@ describe("game logic test for game 3x3", function () {
 });
 
 describe("game logic test for game 3x3", function () {
-  it("should return false when game is't over", function () {
+  it("should return false when game isn't over", function () {
     game.makeMove({i: 0, j: 1});
     const gameIsOver = game.isGameOver();
     assert.equal(gameIsOver, false);
