@@ -16,7 +16,7 @@ router.post(
   "/signup",
   [
     verifySignUp.checkDuplicateEmail,
-    //verifySignUp.checkForEmailValidation,
+    verifySignUp.checkForEmailValidation,
   ],
   auth.signup
 );
