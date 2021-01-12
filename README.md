@@ -5,7 +5,7 @@ For db was used PostgreSQL.
 
 ## Installation
 
-Clone repo https://gitlab.com/wemyit.trainee/oleksandr-hritsaienko.git;
+Clone repo https://github.com/Allonsy22/stick-game.git;
 
 _client_
 ```
