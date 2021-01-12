@@ -29,5 +29,32 @@ _server folder_
 npm run dev
 ```
 
+## Configs schema
+_auth.config.js_
+```
+module.exports = {
+  secret: "your-super-secure-key",
+};
+```
+_db.config.js_
+```
+module.exports = {
+  HOST: "your-host",
+  USER: "user-name",
+  PASSWORD: "user-password",
+  DB: "db-name",
+  dialect: "db-dialect",
+  PORT: "port",
+};
+```
+
+_email.config.js_
+```
+for quickemailverification library
+module.exports = {
+  API_KEY: 'email-api-key',
+};
+```
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
